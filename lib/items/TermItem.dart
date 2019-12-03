@@ -42,7 +42,7 @@ class _TermItemState extends State<TermItem> {
           minWidth: MediaQuery.of(context).size.width,
           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           onPressed: () {
-            if(widget.model.slug=="5"){
+            if(widget.model.slug=="6"){
               print("asd");
               FlutterShare.share(
                   title: 'Example share',
