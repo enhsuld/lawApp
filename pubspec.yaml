@@ -1,0 +1,47 @@
+name: law_app
+description: A new Flutter project.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  splashscreen: ^1.2.0
+  cupertino_icons: ^0.1.2
+  carousel_slider: ^1.3.0
+  http: ^0.12.0+2
+  shared_preferences: ^0.5.3+4
+  expandable: ^3.0.1
+  flutter_launcher_icons: ^0.7.4
+  flutter_share: ^1.0.2+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/Icon-60@3x.png"
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Caslon
+      fonts:
+        - asset: assets/fonts/Caslon.ttf
+    - family: AvenirBold
+      fonts:
+        - asset: assets/fonts/AvenirBold.otf
+    - family: SultanNahia
+      fonts:
+        - asset: assets/fonts/SultanNahia.ttf
+    - family: Avenir
+      fonts:
+        - asset: assets/fonts/AvenirNextLTPro-Regular.otf
+  assets:
+    - assets/images/
