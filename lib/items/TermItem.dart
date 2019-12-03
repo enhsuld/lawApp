@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:law_app/models/term.dart';
+import 'package:law_app/screens/addition_detail_page.dart';
 import 'package:law_app/screens/law_detail_page.dart';
 import 'package:law_app/utils/fade_route.dart';
 
@@ -43,13 +44,15 @@ class _TermItemState extends State<TermItem> {
           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           onPressed: () {
             if(widget.model.slug=="6"){
-              print("asd");
               FlutterShare.share(
                   title: 'Example share',
                   text: 'Example share text',
                   linkUrl: 'https://flutter.dev/',
                   chooserTitle: 'Example Chooser Title'
               );
+            }
+            else if(widget.model.slug=="4"){
+              Navigator.of(context).push(FadeRoute(builder: (context) =>AdditionDetailPage(term: widget.model)));
             }
             else{
               Navigator.of(context).push(FadeRoute(builder: (context) => LawDetailPage(term: widget.model)));
