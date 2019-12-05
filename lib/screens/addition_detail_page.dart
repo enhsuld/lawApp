@@ -20,17 +20,18 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
 
   static const int PAGE_SIZE = 10;
   // List<TermModel> publishedTerms = [];
-  List<TaxonomyModel> publishedTaxonomy = [];
+  List<TermModel> publishedTerms = [];
 
   @override
   void initState() {
     super.initState();
 
-/*    BackendService.getContentById(widget.term.id).then((terms) {
+    BackendService.getContentById(widget.term.id).then((terms) {
       setState(() {
         this.publishedTerms = terms;
+        print(terms);
       });
-    });*/
+    });
   }
 
   @override

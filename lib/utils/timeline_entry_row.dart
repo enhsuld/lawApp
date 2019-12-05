@@ -83,9 +83,11 @@ class TimelineEntryRow extends StatelessWidget {
         child: new Center(
           child: new Text(
             entry.taxonomy,
+            textAlign: TextAlign.center,
             style: new TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.normal,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ));
@@ -107,14 +109,27 @@ class TimelineEntryRow extends StatelessWidget {
         new Container(
           height: lengthToHeight((entry?.description ?? "").length),
           padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
-          child: new Text(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new Text(
+                entry.description,
+                textAlign: TextAlign.justify,
+                overflow: TextOverflow.clip,
+                style: new TextStyle(
+                  //color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+    /*      child: new Text(
             entry.description,
             textAlign: TextAlign.justify,
             overflow: TextOverflow.clip,
             style: new TextStyle(
                 //color: Colors.black,
                 ),
-          ),
+          ),*/
         ),
         // new Text(
         //   entry.description,
@@ -128,20 +143,20 @@ class TimelineEntryRow extends StatelessWidget {
 
   double lengthToHeight(txtLength) {
     if (txtLength < 70) {
-      return 50;
+      return 70;
     }
     if (txtLength < 150) {
-      return 80;
+      return 90;
     }
     if (txtLength < 220) {
-      return 120;
+      return 140;
     }
 
     if (txtLength < 290) {
-      return 140;
+      return 160;
     }
     if (txtLength < 500) {
-      return 180;
+      return 200;
     } else {
       return 250;
     }

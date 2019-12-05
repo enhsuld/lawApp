@@ -7,6 +7,7 @@ import 'package:splashscreen/splashscreen.dart';
 
 void main() {
   runApp(new MaterialApp(
+    title: 'Монгол Улсын Үндсэн хууль',
     debugShowCheckedModeBanner: false,
     theme: ThemeData(primaryColor: Color(0xff1b4392), fontFamily: 'RobotoMono'),
     home: new MyApp(),
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Монгол Улсын Үндсэн хууль',
+      title: 'Law',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primaryColor: textColor, fontFamily: 'Segoe'),
       home: SplashScreen(

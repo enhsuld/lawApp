@@ -48,11 +48,13 @@ class _TermItemState extends State<TermItem> {
                   text: 'Example share text',
                   linkUrl: 'https://flutter.dev/',
                   chooserTitle: 'Example Chooser Title');
-            } else if (widget.model.slug == "4") {
-              Navigator.of(context).push(FadeRoute(
+            }
+            else if (widget.model.slug == "4") {
+             /* Navigator.of(context).push(FadeRoute(
                   builder: (context) =>
-                      AdditionDetailPage(term: widget.model)));
-            } else if (widget.model.slug == "5") {
+                      AdditionDetailPage(term: widget.model)));*/
+            }
+            else if (widget.model.slug == "5") {
               Navigator.of(context).push(FadeRoute(
                   builder: (context) => HistoryPage(term: widget.model)));
             } else {
