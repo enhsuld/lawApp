@@ -33,17 +33,8 @@ flutter_icons:
 flutter:
   uses-material-design: true
   fonts:
-    - family: Caslon
+    - family: Segoe
       fonts:
-        - asset: assets/fonts/Caslon.ttf
-    - family: AvenirBold
-      fonts:
-        - asset: assets/fonts/AvenirBold.otf
-    - family: SultanNahia
-      fonts:
-        - asset: assets/fonts/SultanNahia.ttf
-    - family: Avenir
-      fonts:
-        - asset: assets/fonts/AvenirNextLTPro-Regular.otf
+        - asset: assets/fonts/SegoeUILight.ttf
   assets:
     - assets/images/

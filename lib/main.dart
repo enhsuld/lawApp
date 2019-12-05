@@ -6,7 +6,6 @@ import 'package:splashscreen/splashscreen.dart';
 /*void main() => runApp(MyApp());*/
 
 void main() {
-
   runApp(new MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(primaryColor: Color(0xff1b4392), fontFamily: 'RobotoMono'),
@@ -20,14 +19,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Mn Constitution',
+      title: 'Монгол Улсын Үндсэн хууль',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: textColor, fontFamily: 'RobotoMono'),
+      theme: ThemeData(primaryColor: textColor, fontFamily: 'Segoe'),
       home: SplashScreen(
         seconds: 3,
         navigateAfterSeconds: MainPage(),
         imageBackground:
-        ExactAssetImage('assets/images/Default-896h@2x_iphone.png'),
+            ExactAssetImage('assets/images/Default-896h@2x_iphone.png'),
         gradientBackground: new LinearGradient(
             colors: [Colors.cyan, Colors.blue],
             begin: Alignment.topLeft,
@@ -42,4 +41,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

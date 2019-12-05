@@ -78,13 +78,13 @@ class TimelineEntryRow extends StatelessWidget {
 
   Widget _buildTimeColumn(BuildContext context) {
     return new Container(
-        width: 30.0,
+        width: 40.0,
         //color: Colors.lightBlue,
         child: new Center(
           child: new Text(
             entry.taxonomy,
             style: new TextStyle(
-              fontSize: 9.0,
+              fontSize: 12,
               fontWeight: FontWeight.normal,
             ),
           ),
@@ -105,28 +105,51 @@ class TimelineEntryRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         new Container(
+          height: lengthToHeight((entry?.description ?? "").length),
           padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
           child: new Text(
             entry.description,
+            textAlign: TextAlign.justify,
+            overflow: TextOverflow.clip,
             style: new TextStyle(
-              //color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+                //color: Colors.black,
+                ),
           ),
         ),
-        new Text(
-          entry.description,
-          style: new TextStyle(
-            color: Colors.grey[500],
-          ),
-        ),
+        // new Text(
+        //   entry.description,
+        //   style: new TextStyle(
+        //     color: Colors.grey[500],
+        //   ),
+        // ),
       ],
     );
   }
 
+  double lengthToHeight(txtLength) {
+    if (txtLength < 70) {
+      return 50;
+    }
+    if (txtLength < 150) {
+      return 80;
+    }
+    if (txtLength < 220) {
+      return 120;
+    }
+
+    if (txtLength < 290) {
+      return 140;
+    }
+    if (txtLength < 500) {
+      return 180;
+    } else {
+      return 200;
+    }
+  }
+
   Widget _buildCardContent(BuildContext context) {
     return new Container(
-      height: 80.0,
+      height: lengthToHeight((entry?.description ?? "").length),
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),
       //color: Colors.amber,
       child: new Row(
@@ -154,7 +177,7 @@ class TimelineEntryEnding extends StatelessWidget {
 
   Widget _buildTimeColumn(BuildContext context) {
     return new Container(
-      width: 30.0,
+      width: 40.0,
     );
   }
 
