@@ -31,27 +31,30 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-
             Padding(
-              padding: EdgeInsets.only(top:50,left: 15.0, right: 15.0),
+              padding: EdgeInsets.only(top: 50, left: 15.0, right: 15.0),
               child: Material(
                 elevation: 8.0,
                 borderRadius: BorderRadius.circular(8.0),
                 child: TextFormField(
                     decoration: InputDecoration(
                         border: InputBorder.none,
-                        prefixIcon: Icon(Icons.search, color: Colors.grey,size: 30.0),
-                        suffixIcon: IconButton(icon: new Icon(Icons.format_line_spacing, color: Color(0xFF676E79)),  onPressed:(){},),
-                        contentPadding:
-                        EdgeInsets.only(left: 15.0, top: 15.0),
+                        prefixIcon:
+                            Icon(Icons.search, color: Colors.grey, size: 30.0),
+                        suffixIcon: IconButton(
+                          icon: new Icon(Icons.format_line_spacing,
+                              color: Color(0xFF676E79)),
+                          onPressed: () {},
+                        ),
+                        contentPadding: EdgeInsets.only(left: 15.0, top: 15.0),
                         hintText: 'Хайлт хийх',
                         hintStyle: TextStyle(
-                            color: Colors.grey,
-                            fontFamily: 'Quicksand'))),
+                            color: Colors.grey, fontFamily: 'Quicksand'))),
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top:40,left: 50,right: 50,bottom: 10),
+              padding:
+                  EdgeInsets.only(top: 40, left: 50, right: 50, bottom: 10),
               child: Text(
                 'МОНГОЛ УЛСЫН ҮНДСЭН ХУУЛЬ',
                 textAlign: TextAlign.center,

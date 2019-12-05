@@ -19,7 +19,7 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
   List<String> _views = [];
 
   static const int PAGE_SIZE = 10;
- // List<TermModel> publishedTerms = [];
+  // List<TermModel> publishedTerms = [];
   List<TaxonomyModel> publishedTaxonomy = [];
 
   @override
@@ -31,7 +31,6 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
         this.publishedTerms = terms;
       });
     });*/
-
   }
 
   @override
@@ -52,7 +51,7 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text(
-            widget.term.name,
+            widget.term.name.toUpperCase(),
             style: TextStyle(color: Color(0xff1b4392)),
           ),
         ),

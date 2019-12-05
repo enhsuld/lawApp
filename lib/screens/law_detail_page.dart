@@ -19,7 +19,7 @@ class _LawDetailPageState extends State<LawDetailPage> {
   List<String> _views = [];
 
   static const int PAGE_SIZE = 10;
- // List<TermModel> publishedTerms = [];
+  // List<TermModel> publishedTerms = [];
   List<TaxonomyModel> publishedTaxonomy = [];
 
   @override
@@ -31,7 +31,6 @@ class _LawDetailPageState extends State<LawDetailPage> {
         this.publishedTerms = terms;
       });
     });*/
-
   }
 
   @override
@@ -52,67 +51,71 @@ class _LawDetailPageState extends State<LawDetailPage> {
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text(
-            widget.term.name,
-            style: TextStyle(color: Color(0xff1b4392)),
+            widget.term.name.toUpperCase(),
+            style: TextStyle(color: Color(0xff1b4392), fontSize: 18),
           ),
           bottom: TabBar(
             isScrollable: true,
             labelColor: Color(0xff1b4392),
             indicatorColor: Color(0xff1b4392),
-           /* indicator: BoxDecoration(
+            /* indicator: BoxDecoration(
                 gradient: LinearGradient(
                     colors: [Colors.redAccent, Colors.orangeAccent]),
                 borderRadius: BorderRadius.circular(50),
                 color: Colors.redAccent),*/
-         /*   indicator: BoxDecoration(
+            /*   indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 color: Colors.redAccent),*/
-           /* indicator: UnderlineTabIndicator(
+            /* indicator: UnderlineTabIndicator(
                 borderSide: BorderSide(width: 3.0),
                 insets: EdgeInsets.symmetric(horizontal:16.0)
             ),*/
-            tabs: widget.term.cntTerms
-                .map((tab) => Tab(text: tab.name))
-                .toList(),
+            tabs:
+                widget.term.cntTerms.map((tab) => Tab(text: tab.name)).toList(),
           ),
         ),
         body: TabBarView(
-          children: widget.term.cntTerms.map((view) =>
-              Column(
-                children: <Widget>[
-                  Container(
-                    height: 120,
-                    padding: EdgeInsets.only(left: 50,right: 50),
-                    child: Center(
-                      child: Text(view.slug.toUpperCase(), textAlign: TextAlign.center, style: TextStyle(fontSize: 18,color: Color(0xff1b4392)),),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 1,
-                    width: MediaQuery.of(context).size.width,
-                    child: const DecoratedBox(
-                      decoration: const BoxDecoration(
-                          color: Colors.grey
+          children: widget.term.cntTerms
+              .map(
+                (view) => Column(
+                  children: <Widget>[
+                    Container(
+                      height: 120,
+                      padding: EdgeInsets.only(left: 50, right: 50),
+                      child: Center(
+                        child: Text(
+                          view.slug.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(fontSize: 18, color: Color(0xff1b4392)),
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                      padding: EdgeInsets.only(top:20),
-                      height: MediaQuery.of(context).size.height*0.65,
-                      child: CustomScrollView(slivers: <Widget>[
-                        SliverList(
-                          delegate: new SliverChildBuilderDelegate(
-                                (BuildContext context, int index) {
-                              final item = view.cntTerms[index];
-                              return TermVerticalItem(item, index);
-                            },
-                            childCount: view.cntTerms.length,
+                    SizedBox(
+                      height: 1,
+                      width: MediaQuery.of(context).size.width,
+                      child: const DecoratedBox(
+                        decoration: const BoxDecoration(color: Colors.grey),
+                      ),
+                    ),
+                    Container(
+                        padding: EdgeInsets.only(top: 20),
+                        height: MediaQuery.of(context).size.height * 0.65,
+                        child: CustomScrollView(slivers: <Widget>[
+                          SliverList(
+                            delegate: new SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                final item = view.cntTerms[index];
+                                return TermVerticalItem(item, index);
+                              },
+                              childCount: view.cntTerms.length,
+                            ),
                           ),
-                        ),
-                      ])),
-                ],
-              ),
-          ).toList(),
+                        ])),
+                  ],
+                ),
+              )
+              .toList(),
         ),
       ),
     );
