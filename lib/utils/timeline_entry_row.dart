@@ -143,7 +143,7 @@ class TimelineEntryRow extends StatelessWidget {
     if (txtLength < 500) {
       return 180;
     } else {
-      return 200;
+      return 250;
     }
   }
 
