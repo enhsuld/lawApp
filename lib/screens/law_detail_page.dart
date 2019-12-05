@@ -4,7 +4,10 @@ import 'package:law_app/items/TermItem.dart';
 import 'package:law_app/items/TermVerticalItem.dart';
 import 'package:law_app/models/taxonomy.dart';
 import 'package:law_app/models/term.dart';
+import 'package:law_app/screens/search_page.dart';
 import 'package:law_app/services/BackendService.dart';
+import 'package:law_app/utils/fade_route.dart';
+import 'package:material_search/material_search.dart';
 
 class LawDetailPage extends StatefulWidget {
   final TermModel term;
@@ -33,6 +36,51 @@ class _LawDetailPageState extends State<LawDetailPage> {
     });*/
   }
 
+  final _names = [
+    'хууль',
+    'Үндсэн',
+  ];
+
+  String _name = 'No one';
+
+  final _formKey = new GlobalKey<FormState>();
+
+  _buildMaterialSearchPage(BuildContext context) {
+    return new MaterialPageRoute<String>(
+        settings: new RouteSettings(
+          name: 'material_search',
+          isInitialRoute: false,
+        ),
+        builder: (BuildContext context) {
+          return new Material(
+            child: new MaterialSearch<String>(
+              placeholder: 'Search',
+              results: _names
+                  .map((String v) => new MaterialSearchResult<String>(
+                        //icon: Icons.person,
+                        value: v,
+                        text: "$v",
+                      ))
+                  .toList(),
+              filter: (dynamic value, String criteria) {
+                return value.toLowerCase().trim().contains(
+                    new RegExp(r'' + criteria.toLowerCase().trim() + ''));
+              },
+              onSelect: (dynamic value) => Navigator.of(context).pop(value),
+              onSubmit: (String value) => Navigator.of(context).pop(value),
+            ),
+          );
+        });
+  }
+
+  _showMaterialSearch(BuildContext context) {
+    Navigator.of(context)
+        .push(_buildMaterialSearchPage(context))
+        .then((dynamic value) {
+      setState(() => _name = value as String);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -52,24 +100,24 @@ class _LawDetailPageState extends State<LawDetailPage> {
           backgroundColor: Colors.white,
           title: Text(
             widget.term.name.toUpperCase(),
-            style: TextStyle(color: Color(0xff1b4392), fontSize: 18),
+            style: TextStyle(color: Color(0xff1b4392), fontSize: 14),
           ),
+          actions: <Widget>[
+            MaterialButton(
+              onPressed: () {
+                _showMaterialSearch(context);
+              },
+              minWidth: 20,
+              child: Icon(
+                Icons.search,
+                color: Color(0xff1b4392),
+              ),
+            )
+          ],
           bottom: TabBar(
             isScrollable: true,
             labelColor: Color(0xff1b4392),
             indicatorColor: Color(0xff1b4392),
-            /* indicator: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Colors.redAccent, Colors.orangeAccent]),
-                borderRadius: BorderRadius.circular(50),
-                color: Colors.redAccent),*/
-            /*   indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: Colors.redAccent),*/
-            /* indicator: UnderlineTabIndicator(
-                borderSide: BorderSide(width: 3.0),
-                insets: EdgeInsets.symmetric(horizontal:16.0)
-            ),*/
             tabs:
                 widget.term.cntTerms.map((tab) => Tab(text: tab.name)).toList(),
           ),
@@ -77,43 +125,38 @@ class _LawDetailPageState extends State<LawDetailPage> {
         body: TabBarView(
           children: widget.term.cntTerms
               .map(
-                (view) => Column(
-                  children: <Widget>[
-                    Container(
-                      height: 120,
-                      padding: EdgeInsets.only(left: 50, right: 50),
-                      child: Center(
-                        child: Text(
-                          view.slug.toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style:
-                              TextStyle(fontSize: 18, color: Color(0xff1b4392)),
+                (view) => Container(
+                    child: CustomScrollView(slivers: <Widget>[
+                  SliverList(
+                    delegate: new SliverChildListDelegate([
+                      Container(
+                        height: 100,
+                        padding: EdgeInsets.only(left: 50, right: 50),
+                        child: Center(
+                          child: Text(
+                            view.slug.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 18, color: Color(0xff1b4392)),
+                          ),
                         ),
                       ),
+                      // Divider(
+                      //   color: Colors.grey[300],
+                      //   thickness: 1,
+                      // ),
+                    ]),
+                  ),
+                  SliverList(
+                    delegate: new SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        final item = view.cntTerms[index];
+                        return TermVerticalItem(item, index);
+                      },
+                      childCount: view.cntTerms.length,
                     ),
-                    SizedBox(
-                      height: 1,
-                      width: MediaQuery.of(context).size.width,
-                      child: const DecoratedBox(
-                        decoration: const BoxDecoration(color: Colors.grey),
-                      ),
-                    ),
-                    Container(
-                        padding: EdgeInsets.only(top: 20),
-                        height: MediaQuery.of(context).size.height * 0.65,
-                        child: CustomScrollView(slivers: <Widget>[
-                          SliverList(
-                            delegate: new SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                final item = view.cntTerms[index];
-                                return TermVerticalItem(item, index);
-                              },
-                              childCount: view.cntTerms.length,
-                            ),
-                          ),
-                        ])),
-                  ],
-                ),
+                  ),
+                ])),
               )
               .toList(),
         ),
