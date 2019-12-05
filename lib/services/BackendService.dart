@@ -33,4 +33,12 @@ class BackendService {
     print(json.decode(response.body));
     return TaxonomyModel.fromJsonList(json.decode(response.body));
   }
+
+  static Future<List<TaxonomyModel>> getHistoryList(id, offset, limit) async {
+    final response = (await http
+        .get(apiURL + '/term/taxonomy/tax/$id?page=$offset&size=$limit'));
+    print(response.statusCode);
+    return TaxonomyModel.fromJsonList(json.decode(response.body),
+        dataKey: "content");
+  }
 }

@@ -18,6 +18,8 @@ dependencies:
   expandable: ^3.0.1
   flutter_launcher_icons: ^0.7.4
   flutter_share: ^1.0.2+1
+  flutter_pagewise: ^1.2.3
+  flutter_flux: ^4.1.3
 
 dev_dependencies:
   flutter_test:
@@ -26,7 +28,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/Icon-60@3x.png"
+  image_path: "assets/images/logo@3x.png"
 
 flutter:
   uses-material-design: true
