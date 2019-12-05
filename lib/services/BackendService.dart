@@ -8,7 +8,7 @@ import 'package:law_app/models/term.dart';
 class BackendService {
   //static String apiURL = "http://192.168.1.116:80/api/v1";
   // static String url = "http://192.168.1.111:8080/api";
-  static String url = "http://goldwatch.ml/api";
+  static String url = "http://audit.tyder.mn/api";
   static String apiURL = url + "/cnt";
 
   static Future<List<TermModel>> getContent(offset, limit,
