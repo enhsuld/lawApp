@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:law_app/models/taxonomy.dart';
 import 'package:law_app/models/term.dart';
+import 'package:law_app/models/term1.dart';
 import 'package:law_app/services/BackendService.dart';
 import 'package:law_app/utils/timeline_entry_row.dart';
 
 class HistoryPage extends StatefulWidget {
-  final TermModel term;
+  final TermOnlyModel term;
   HistoryPage({this.term});
   _HistoryPageState createState() => _HistoryPageState();
 }

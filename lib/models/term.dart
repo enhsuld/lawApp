@@ -10,14 +10,29 @@ class TermModel {
 
   //const TermModel({this.id, this.name, this.slug, this.parentId});
 
-  const TermModel({this.id, this.name, this.slug, this.parentId, this.cntTerms, this.cntTermTaxonomies});
+  const TermModel(
+      {this.id,
+      this.name,
+      this.slug,
+      this.parentId,
+      this.cntTerms,
+      this.cntTermTaxonomies});
 
   //TermModel.fromJson(Map jsonMap) : id=jsonMap['id'],name = jsonMap['name'],slug = jsonMap['slug'],parentId = jsonMap['parentId'];
 
-  TermModel.fromJson(Map jsonMap) : id=jsonMap['id'],name = jsonMap['name'],slug = jsonMap['slug'],parentId = jsonMap['parentId'],cntTerms=(jsonMap['cntTerms']).map((i) => TermModel.fromJson(i)).toList(),cntTermTaxonomies=(jsonMap['cntTermTaxonomies']).map((i) => TaxonomyModel.fromJson(i)).toList();
+  TermModel.fromJson(Map jsonMap)
+      : id = jsonMap['id'],
+        name = jsonMap['name'],
+        slug = jsonMap['slug'],
+        parentId = jsonMap['parentId'],
+        cntTerms =
+            (jsonMap['cntTerms']).map((i) => TermModel.fromJson(i)).toList(),
+        cntTermTaxonomies = (jsonMap['cntTermTaxonomies'])
+            .map((i) => TaxonomyModel.fromJson(i))
+            .toList();
 
   static List<TermModel> fromJsonList(jsonList) {
-    return  jsonList.map<TermModel>((obj) => TermModel.fromJson(obj)).toList();
+    return jsonList.map<TermModel>((obj) => TermModel.fromJson(obj)).toList();
   }
 
   map(TermModel model) {}

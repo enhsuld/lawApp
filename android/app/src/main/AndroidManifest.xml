@@ -9,7 +9,7 @@
          <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="law_app"
+        android:label="Монгол Улсын Үндсэн хууль"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

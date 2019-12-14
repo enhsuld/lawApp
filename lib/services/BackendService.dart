@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:law_app/models/taxonomy.dart';
 import 'package:law_app/models/term.dart';
+import 'package:law_app/models/term1.dart';
+import 'package:law_app/models/term_law.dart';
 
 class BackendService {
   //static String apiURL = "http://192.168.1.116:80/api/v1";
@@ -19,11 +21,26 @@ class BackendService {
     return TermModel.fromJsonList(json.decode(response.body));
   }
 
+  static Future<List<TermOnlyModel>> getTerm(offset, limit,
+      {publish: '', filters: ''}) async {
+    final response = (await http.get(apiURL + '/term/all'));
+    print(response.statusCode);
+    print(json.decode(response.body));
+    return TermOnlyModel.fromJsonList(json.decode(response.body));
+  }
+
   static Future<List<TermModel>> getContentById(id) async {
     final response = (await http.get(apiURL + '/term/list/' + id.toString()));
     print(response.statusCode);
     print(json.decode(response.body));
     return TermModel.fromJsonList(json.decode(response.body));
+  }
+
+  static Future<List<TermLawModel>> getLawSearch({keyword: ""}) async {
+    final response = (await http.get(apiURL + '/term/search$keyword'));
+    print(response.statusCode);
+    print(json.decode(response.body));
+    return TermLawModel.fromJsonList(json.decode(response.body));
   }
 
   static Future<List<TaxonomyModel>> getTaxonomyById(id) async {

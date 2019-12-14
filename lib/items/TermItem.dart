@@ -1,15 +1,13 @@
-import 'dart:collection';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:law_app/models/term.dart';
-import 'package:law_app/screens/addition_detail_page.dart';
+import 'package:law_app/models/term1.dart';
 import 'package:law_app/screens/history_page.dart';
 import 'package:law_app/screens/law_detail_page.dart';
 import 'package:law_app/utils/fade_route.dart';
 
 class TermItem extends StatefulWidget {
-  final TermModel model;
+  final TermOnlyModel model;
   final int index;
 
   TermItem(this.model, this.index);

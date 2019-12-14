@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:law_app/items/TaxonomyItem.dart';
-import 'package:law_app/items/TermItem.dart';
 import 'package:law_app/items/TermVerticalItem.dart';
 import 'package:law_app/models/taxonomy.dart';
-import 'package:law_app/models/term.dart';
-import 'package:law_app/screens/search_page.dart';
+import 'package:law_app/models/term1.dart';
+import 'package:law_app/models/term_law.dart';
 import 'package:law_app/services/BackendService.dart';
-import 'package:law_app/utils/fade_route.dart';
+import 'package:law_app/utils/colorlaw.dart';
 import 'package:material_search/material_search.dart';
 
 class LawDetailPage extends StatefulWidget {
-  final TermModel term;
+  final TermOnlyModel term;
 
   LawDetailPage({Key key, this.term});
 
@@ -22,18 +20,21 @@ class _LawDetailPageState extends State<LawDetailPage> {
   List<String> _views = [];
 
   static const int PAGE_SIZE = 10;
-  // List<TermModel> publishedTerms = [];
+  List<TermLawModel> publishedTerms = [];
   List<TaxonomyModel> publishedTaxonomy = [];
 
   @override
   void initState() {
     super.initState();
+    getLaws(keyword: "");
+  }
 
-/*    BackendService.getContentById(widget.term.id).then((terms) {
+  getLaws({keyword}) {
+    BackendService.getLawSearch(keyword: keyword).then((terms) {
       setState(() {
         this.publishedTerms = terms;
       });
-    });*/
+    });
   }
 
   final _names = [
@@ -42,6 +43,7 @@ class _LawDetailPageState extends State<LawDetailPage> {
   ];
 
   String _name = 'No one';
+  String search = "";
 
   final _formKey = new GlobalKey<FormState>();
 
@@ -54,7 +56,7 @@ class _LawDetailPageState extends State<LawDetailPage> {
         builder: (BuildContext context) {
           return new Material(
             child: new MaterialSearch<String>(
-              placeholder: 'Search',
+              placeholder: 'Хайх',
               results: _names
                   .map((String v) => new MaterialSearchResult<String>(
                         //icon: Icons.person,
@@ -67,7 +69,9 @@ class _LawDetailPageState extends State<LawDetailPage> {
                     new RegExp(r'' + criteria.toLowerCase().trim() + ''));
               },
               onSelect: (dynamic value) => Navigator.of(context).pop(value),
-              onSubmit: (String value) => Navigator.of(context).pop(value),
+              onSubmit: (String value) {
+                Navigator.of(context).pop(value);
+              },
             ),
           );
         });
@@ -77,14 +81,20 @@ class _LawDetailPageState extends State<LawDetailPage> {
     Navigator.of(context)
         .push(_buildMaterialSearchPage(context))
         .then((dynamic value) {
-      setState(() => _name = value as String);
+      if (value != null) {
+        setState(() {
+          search = value as String;
+        });
+        getLaws(keyword: "?query=" + (value as String));
+      }
+      //setState(() => _name = value as String);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: widget.term.cntTerms.length,
+      length: publishedTerms.length,
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -93,39 +103,54 @@ class _LawDetailPageState extends State<LawDetailPage> {
             },
             icon: Icon(
               Icons.arrow_back,
-              color: Color(0xff1b4392),
+              color: ColorLaw.blue,
             ),
           ),
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text(
             widget.term.name.toUpperCase(),
-            style: TextStyle(color: Color(0xff1b4392), fontSize: 14),
+            style: TextStyle(color: ColorLaw.blue, fontSize: 16),
           ),
           actions: <Widget>[
-            MaterialButton(
-              onPressed: () {
-                _showMaterialSearch(context);
-              },
-              minWidth: 20,
-              child: Icon(
-                Icons.search,
-                color: Color(0xff1b4392),
-              ),
-            )
+            (search != null && search.length > 0)
+                ? MaterialButton(
+                    onPressed: () {
+                      setState(() {
+                        search = "";
+                      });
+                      getLaws(keyword: "");
+                    },
+                    minWidth: 20,
+                    child: Icon(
+                      Icons.clear,
+                      color: ColorLaw.blue,
+                    ),
+                  )
+                : MaterialButton(
+                    onPressed: () {
+                      _showMaterialSearch(context);
+                    },
+                    minWidth: 20,
+                    child: Icon(
+                      Icons.search,
+                      color: ColorLaw.blue,
+                    ),
+                  )
           ],
           bottom: TabBar(
             isScrollable: true,
-            labelColor: Color(0xff1b4392),
-            indicatorColor: Color(0xff1b4392),
-            tabs:
-                widget.term.cntTerms.map((tab) => Tab(text: tab.name)).toList(),
+            labelStyle: TextStyle(fontWeight: FontWeight.w700),
+            unselectedLabelStyle: TextStyle(),
+            labelColor: ColorLaw.blue,
+            indicatorColor: ColorLaw.blue,
+            tabs: publishedTerms.map((tab) => Tab(text: tab.name)).toList(),
           ),
         ),
         body: TabBarView(
-          children: widget.term.cntTerms
+          children: publishedTerms
               .map(
-                (view) => Container(
+                (view) => new Container(
                     child: CustomScrollView(slivers: <Widget>[
                   SliverList(
                     delegate: new SliverChildListDelegate([
@@ -137,7 +162,9 @@ class _LawDetailPageState extends State<LawDetailPage> {
                             view.slug.toUpperCase(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 18, color: Color(0xff1b4392)),
+                                fontSize: 18,
+                                color: ColorLaw.blue,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                       ),
@@ -151,7 +178,7 @@ class _LawDetailPageState extends State<LawDetailPage> {
                     delegate: new SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
                         final item = view.cntTerms[index];
-                        return TermVerticalItem(item, index);
+                        return new TermVerticalItem(item, index, search);
                       },
                       childCount: view.cntTerms.length,
                     ),
