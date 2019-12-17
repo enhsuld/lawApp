@@ -4,6 +4,7 @@ import 'package:law_app/models/term.dart';
 import 'package:law_app/models/term1.dart';
 import 'package:law_app/screens/history_page.dart';
 import 'package:law_app/screens/law_detail_page.dart';
+import 'package:law_app/screens/orshil_page.dart';
 import 'package:law_app/utils/fade_route.dart';
 
 class TermItem extends StatefulWidget {
@@ -53,6 +54,9 @@ class _TermItemState extends State<TermItem> {
             } else if (widget.model.slug == "5") {
               Navigator.of(context).push(FadeRoute(
                   builder: (context) => HistoryPage(term: widget.model)));
+            } else if (widget.model.slug == "0") {
+              Navigator.of(context).push(FadeRoute(
+                  builder: (context) => OrshilPage(term: widget.model)));
             } else {
               Navigator.of(context).push(FadeRoute(
                   builder: (context) => LawDetailPage(term: widget.model)));
@@ -63,17 +67,19 @@ class _TermItemState extends State<TermItem> {
               Padding(
                 padding: EdgeInsets.only(right: 15),
                 child: Image.asset(
-                  (widget.model.slug == "1")
+                  (widget.model.slug == "0")
                       ? 'assets/images/ic_home_one.png'
-                      : (widget.model.slug == "2")
-                          ? 'assets/images/ic_home_two.png'
-                          : (widget.model.slug == "3")
-                              ? 'assets/images/ic_home_three.png'
-                              : (widget.model.slug == "4")
-                                  ? 'assets/images/ic_home_four.png'
-                                  : (widget.model.slug == "5")
-                                      ? 'assets/images/ic_home_five.png'
-                                      : 'assets/images/ic_home_six.png',
+                      : (widget.model.slug == "1")
+                          ? 'assets/images/ic_home_one.png'
+                          : (widget.model.slug == "2")
+                              ? 'assets/images/ic_home_two.png'
+                              : (widget.model.slug == "3")
+                                  ? 'assets/images/ic_home_three.png'
+                                  : (widget.model.slug == "4")
+                                      ? 'assets/images/ic_home_four.png'
+                                      : (widget.model.slug == "5")
+                                          ? 'assets/images/ic_home_five.png'
+                                          : 'assets/images/ic_home_six.png',
                   width: 20,
                 ),
               ),
