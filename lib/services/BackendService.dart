@@ -1,7 +1,6 @@
-import 'dart:collection';
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:law_app/models/history.dart';
 import 'package:law_app/models/taxonomy.dart';
 import 'package:law_app/models/term.dart';
 import 'package:law_app/models/term1.dart';
@@ -11,6 +10,7 @@ class BackendService {
   //static String apiURL = "http://192.168.1.116:80/api/v1";
   // static String url = "http://192.168.1.111:8080/api";
   static String url = "http://audit.tyder.mn/api";
+  static String link = "http://audit.tyder.mn/";
   static String apiURL = url + "/cnt";
 
   static Future<List<TermModel>> getContent(offset, limit,
@@ -26,7 +26,7 @@ class BackendService {
     final response = (await http.get(apiURL + '/term/all'));
     print(response.statusCode);
     print(json.decode(response.body));
-    return TermOnlyModel.fromJsonList(json.decode(response.body));
+    return TermOnlyModel.fromJsonList(jsonList: json.decode(response.body));
   }
 
   static Future<List<TermModel>> getContentById(id) async {
@@ -57,5 +57,19 @@ class BackendService {
     print(response.statusCode);
     return TaxonomyModel.fromJsonList(json.decode(response.body),
         dataKey: "content");
+  }
+
+  static Future<List<HistoryModel>> getHistoryGroup() async {
+    final response = (await http.get(apiURL + '/term/item/88'));
+    print(response.statusCode);
+    return HistoryModel.fromJsonList(
+        jsonList: json.decode(response.body), dataKey: "child");
+  }
+
+  static Future<List<TermOnlyModel>> getOrshilList(id, offset, limit) async {
+    final response = (await http.get(apiURL + '/term/json/$id'));
+    print(response.body);
+    return TermOnlyModel.fromJsonList(
+        jsonList: json.decode(response.body), dataKey: "cntTerms");
   }
 }

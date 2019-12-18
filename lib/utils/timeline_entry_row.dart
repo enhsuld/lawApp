@@ -43,7 +43,7 @@ class LinePainter extends CustomPainter {
   void _paint(Canvas canvas, Size size) {
     Paint linePaint = new Paint()
       ..color = lineColor
-      ..strokeWidth = 4.0
+      ..strokeWidth = 5.0
       ..strokeCap = StrokeCap.square
       ..style = PaintingStyle.stroke;
 
@@ -54,7 +54,7 @@ class LinePainter extends CustomPainter {
       ..color = lineColor
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(size.center(Offset.zero), 8.0, fillPaint);
+    canvas.drawCircle(size.center(Offset.zero), 14.0, fillPaint);
   }
 
   @override
@@ -82,7 +82,7 @@ class TimelineEntryRow extends StatelessWidget {
         //color: Colors.lightBlue,
         child: new Center(
           child: new Text(
-            entry.taxonomy,
+            entry?.taxonomy ?? "",
             textAlign: TextAlign.center,
             style: new TextStyle(
               fontSize: 12,
@@ -112,17 +112,29 @@ class TimelineEntryRow extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Text(
-                entry.description,
-                textAlign: TextAlign.justify,
-                overflow: TextOverflow.clip,
-                style: new TextStyle(
-                  //color: Colors.black,
-                ),
+              Container(
+                width: double.infinity,
+                child: new Text(entry?.taxonomy ?? "",
+                    textAlign: TextAlign.justify,
+                    overflow: TextOverflow.clip,
+                    style: new TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold)),
               ),
+              Container(
+                  width: double.infinity,
+                  child: new Text(
+                    entry?.description ?? "",
+                    textAlign: TextAlign.justify,
+                    overflow: TextOverflow.clip,
+                    style: new TextStyle(
+                        //color: Colors.black,
+                        fontSize: 14),
+                  )),
             ],
           ),
-    /*      child: new Text(
+          /*      child: new Text(
             entry.description,
             textAlign: TextAlign.justify,
             overflow: TextOverflow.clip,
@@ -142,23 +154,26 @@ class TimelineEntryRow extends StatelessWidget {
   }
 
   double lengthToHeight(txtLength) {
-    if (txtLength < 70) {
-      return 70;
+    if (txtLength < 50) {
+      return 80;
+    }
+    if (txtLength < 90) {
+      return 100;
     }
     if (txtLength < 150) {
-      return 90;
+      return 120;
     }
     if (txtLength < 220) {
-      return 140;
+      return 160;
     }
 
     if (txtLength < 290) {
-      return 160;
+      return 190;
     }
     if (txtLength < 500) {
-      return 200;
+      return 240;
     } else {
-      return 250;
+      return 300;
     }
   }
 
@@ -170,51 +185,10 @@ class TimelineEntryRow extends StatelessWidget {
       child: new Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildTimeColumn(context),
           _buildLineColumn(context),
+          SizedBox(width: 10),
           new Expanded(child: _buildTextColumn(context))
         ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _buildCardContent(context);
-  }
-}
-
-class TimelineEntryEnding extends StatelessWidget {
-  final Color color;
-  final Color backgroundColor;
-
-  TimelineEntryEnding({@required this.color, @required this.backgroundColor});
-
-  Widget _buildTimeColumn(BuildContext context) {
-    return new Container(
-      width: 40.0,
-    );
-  }
-
-  Widget _buildLineColumn(BuildContext context) {
-    return new Container(
-        width: 40.0,
-        //color: Colors.lightGreen,
-        child: new CustomPaint(
-            painter: new LinePainter(
-                lineColor: color,
-                backgroundColor: backgroundColor,
-                ending: true)));
-  }
-
-  Widget _buildCardContent(BuildContext context) {
-    return new Container(
-      height: 20.0,
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),
-      //color: Colors.amber,
-      child: new Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [_buildTimeColumn(context), _buildLineColumn(context)],
       ),
     );
   }

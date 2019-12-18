@@ -20,8 +20,8 @@ class _LawDetailPageState extends State<LawDetailPage> {
   List<String> _views = [];
 
   static const int PAGE_SIZE = 10;
-  List<TermLawModel> publishedTerms = [];
-  List<TaxonomyModel> publishedTaxonomy = [];
+  List<TermLawModel> publishedTerms = new List();
+  List<TaxonomyModel> publishedTaxonomy = new List();
 
   @override
   void initState() {
@@ -93,101 +93,108 @@ class _LawDetailPageState extends State<LawDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: publishedTerms.length,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: ColorLaw.blue,
-            ),
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          title: Text(
-            widget.term.name.toUpperCase(),
-            style: TextStyle(color: ColorLaw.blue, fontSize: 16),
-          ),
-          actions: <Widget>[
-            (search != null && search.length > 0)
-                ? MaterialButton(
-                    onPressed: () {
-                      setState(() {
-                        search = "";
-                      });
-                      getLaws(keyword: "");
-                    },
-                    minWidth: 20,
-                    child: Icon(
-                      Icons.clear,
-                      color: ColorLaw.blue,
-                    ),
-                  )
-                : MaterialButton(
-                    onPressed: () {
-                      _showMaterialSearch(context);
-                    },
-                    minWidth: 20,
-                    child: Icon(
-                      Icons.search,
-                      color: ColorLaw.blue,
-                    ),
-                  )
-          ],
-          bottom: TabBar(
-            isScrollable: true,
-            labelStyle: TextStyle(fontWeight: FontWeight.w700),
-            unselectedLabelStyle: TextStyle(),
-            labelColor: ColorLaw.blue,
-            indicatorColor: ColorLaw.blue,
-            tabs: publishedTerms.map((tab) => Tab(text: tab.name)).toList(),
-          ),
-        ),
-        body: TabBarView(
-          children: publishedTerms
-              .map(
-                (view) => new Container(
-                    child: CustomScrollView(slivers: <Widget>[
-                  SliverList(
-                    delegate: new SliverChildListDelegate([
-                      Container(
-                        height: 100,
-                        padding: EdgeInsets.only(left: 50, right: 50),
-                        child: Center(
-                          child: Text(
-                            view.slug.toUpperCase(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorLaw.blue,
-                                fontWeight: FontWeight.w600),
+    return (publishedTerms.length > 0)
+        ? DefaultTabController(
+            length: publishedTerms.length,
+            child: Scaffold(
+              appBar: AppBar(
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: ColorLaw.blue,
+                  ),
+                ),
+                centerTitle: true,
+                backgroundColor: Colors.white,
+                title: Text(
+                  widget.term.name.toUpperCase(),
+                  style: TextStyle(color: ColorLaw.blue, fontSize: 16),
+                ),
+                actions: <Widget>[
+                  (search != null && search.length > 0)
+                      ? MaterialButton(
+                          onPressed: () {
+                            setState(() {
+                              search = "";
+                            });
+                            getLaws(keyword: "");
+                          },
+                          minWidth: 20,
+                          child: Icon(
+                            Icons.clear,
+                            color: ColorLaw.blue,
+                          ),
+                        )
+                      : MaterialButton(
+                          onPressed: () {
+                            _showMaterialSearch(context);
+                          },
+                          minWidth: 20,
+                          child: Icon(
+                            Icons.search,
+                            color: ColorLaw.blue,
+                          ),
+                        )
+                ],
+                bottom: TabBar(
+                  isScrollable: true,
+                  labelStyle: TextStyle(fontWeight: FontWeight.w700),
+                  unselectedLabelStyle: TextStyle(),
+                  labelColor: ColorLaw.blue,
+                  indicatorColor: ColorLaw.blue,
+                  tabs:
+                      publishedTerms.map((tab) => Tab(text: tab.name)).toList(),
+                ),
+              ),
+              body: TabBarView(
+                children: publishedTerms
+                    .map(
+                      (view) => new Container(
+                          child: CustomScrollView(slivers: <Widget>[
+                        SliverList(
+                          delegate: new SliverChildListDelegate([
+                            Container(
+                              height: 100,
+                              padding: EdgeInsets.only(left: 50, right: 50),
+                              child: Center(
+                                child: Text(
+                                  view.slug.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: ColorLaw.blue,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ),
+                            // Divider(
+                            //   color: Colors.grey[300],
+                            //   thickness: 1,
+                            // ),
+                          ]),
+                        ),
+                        SliverList(
+                          delegate: new SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                              final item = view.cntTerms[index];
+                              return new TermVerticalItem(item, index, search);
+                            },
+                            childCount: view.cntTerms.length,
                           ),
                         ),
-                      ),
-                      // Divider(
-                      //   color: Colors.grey[300],
-                      //   thickness: 1,
-                      // ),
-                    ]),
-                  ),
-                  SliverList(
-                    delegate: new SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        final item = view.cntTerms[index];
-                        return new TermVerticalItem(item, index, search);
-                      },
-                      childCount: view.cntTerms.length,
-                    ),
-                  ),
-                ])),
-              )
-              .toList(),
-        ),
-      ),
-    );
+                      ])),
+                    )
+                    .toList(),
+              ),
+            ),
+          )
+        : Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
   }
 }
