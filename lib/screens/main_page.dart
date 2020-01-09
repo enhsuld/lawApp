@@ -41,9 +41,10 @@ class _MainPageState extends State<MainPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
+                  height: 260,
                   padding:
                       EdgeInsets.only(top: 80, left: 50, right: 50, bottom: 10),
-                  child: Image.asset("assets/images/logo@2x.png"),
+                  child: Image.asset("assets/images/logo_large.png"),
                 ),
                 Container(
                   padding:

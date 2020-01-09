@@ -83,16 +83,16 @@ class _HistoryPageState extends State<HistoryPage> {
                     )));
       },
       child: Container(
-        padding: EdgeInsets.all(1),
+        padding: EdgeInsets.all(2),
         child: Stack(
           children: <Widget>[
             Center(
               child: FadeInImage.assetNetwork(
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
                 height: 200,
-                placeholder: "assets/images/logo@2x.png",
+                placeholder: "assets/images/logo_large.png",
                 image: ((entry?.medias ?? []).length > 0)
-                    ? BackendService.link + entry.medias[0]
+                    ? BackendService.url + entry.medias[0]
                     : "",
               ),
             ),
