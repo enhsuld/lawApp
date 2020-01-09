@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:law_app/models/taxonomy.dart';
+import 'package:law_app/utils/colorlaw.dart';
 import 'package:meta/meta.dart';
 
 class LinePainter extends CustomPainter {
@@ -32,7 +33,7 @@ class LinePainter extends CustomPainter {
     Paint linePaint = new Paint()
       ..shader = new ui.Gradient.linear(new Offset(0.0, 20.0),
           new Offset(0.0, 0.0), <Color>[backgroundColor, lineColor])
-      ..strokeWidth = 4.0
+      ..strokeWidth = 1.0
       ..strokeCap = StrokeCap.square
       ..style = PaintingStyle.stroke;
 
@@ -43,7 +44,7 @@ class LinePainter extends CustomPainter {
   void _paint(Canvas canvas, Size size) {
     Paint linePaint = new Paint()
       ..color = lineColor
-      ..strokeWidth = 5.0
+      ..strokeWidth = 1.0
       ..strokeCap = StrokeCap.square
       ..style = PaintingStyle.stroke;
 
@@ -55,6 +56,7 @@ class LinePainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(size.center(Offset.zero), 14.0, fillPaint);
+    //canvas.drawRect(new Rect.fromLTRB(0.0, 0.0, 20.0, 20.0), fillPaint);
   }
 
   @override
@@ -102,12 +104,50 @@ class TimelineEntryRow extends StatelessWidget {
                 lineColor: lineColor, backgroundColor: lineColor)));
   }
 
+  Widget _buildLineCheck(BuildContext context) {
+    return Container(
+      width: 30,
+      child: Stack(
+        children: <Widget>[
+          Center(
+            child: Container(
+              width: 1.5,
+              color: ColorLaw.blue,
+            ),
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Container(
+                width: 28,
+                height: 21,
+                padding: EdgeInsets.all(1),
+                decoration: BoxDecoration(
+                    //shape: BoxShape.circle,
+                    color: Colors.white,
+                    border: Border.all(width: 1.5, color: ColorLaw.blue),
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    image: DecorationImage(
+                      fit: BoxFit.fitHeight,
+                      image: new AssetImage("assets/images/tug.png"),
+                    )),
+                //child: Image.asset("assets/images/tug.png"),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   Widget _buildTextColumn(BuildContext context) {
     return new Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         new Container(
-          height: lengthToHeight((entry?.description ?? "").length),
+          //height: lengthToHeight((entry?.description ?? "").length),
           padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -155,42 +195,94 @@ class TimelineEntryRow extends StatelessWidget {
 
   double lengthToHeight(txtLength) {
     if (txtLength < 50) {
-      return 80;
+      return 90;
     }
     if (txtLength < 90) {
-      return 100;
+      return 110;
     }
     if (txtLength < 150) {
-      return 120;
+      return 140;
     }
     if (txtLength < 220) {
-      return 160;
+      return 170;
     }
 
     if (txtLength < 290) {
-      return 190;
+      return 200;
     }
     if (txtLength < 500) {
-      return 240;
+      return 250;
     } else {
-      return 300;
+      return 310;
     }
   }
 
   Widget _buildCardContent(BuildContext context) {
     return new Container(
-      height: lengthToHeight((entry?.description ?? "").length),
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),
-      //color: Colors.amber,
-      child: new Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildLineColumn(context),
-          SizedBox(width: 10),
-          new Expanded(child: _buildTextColumn(context))
-        ],
-      ),
-    );
+        height: lengthToHeight((entry?.description ?? "").length),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),
+        //color: Colors.amber,
+        child: Row(
+          children: <Widget>[
+            _buildLineCheck(context),
+            // Container(
+            //   width: 10,
+            //   color: Colors.black,
+            //   child: Expanded(
+            //     child: Stack(),
+            //   ),
+            // ),
+            // Row(
+            //   children: <Widget>[
+            //     Container(
+            //       width: 10,
+            //       height: 10,
+            //       color: Colors.black,
+            //     )
+            //   ],
+            // ),
+            SizedBox(
+              width: 10,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width - 64,
+                  child: new Text(entry?.taxonomy ?? "",
+                      textAlign: TextAlign.justify,
+                      style: new TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold)),
+                ),
+                Container(
+                    width: MediaQuery.of(context).size.width - 68,
+                    child: new Text(
+                      entry?.description ?? "",
+                      textAlign: TextAlign.justify,
+                      //overflow: TextOverflow.clip,
+                      style: new TextStyle(
+                          //color: Colors.black,
+                          fontSize: 16),
+                    )),
+                // SizedBox(
+                //   height: 30,
+                // )
+              ],
+            )
+          ],
+        )
+        // new Row(
+        //   crossAxisAlignment: CrossAxisAlignment.stretch,
+        //   children: [
+        //     //_buildLineColumn(context),
+        //     _buildLineCheck(context),
+        //     SizedBox(width: 10),
+        //     //new Expanded(child: _buildTextColumn(context))
+        //   ],
+        // ),
+        );
   }
 
   @override

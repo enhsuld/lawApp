@@ -157,15 +157,24 @@ class _LawDetailPageState extends State<LawDetailPage> {
                         SliverList(
                           delegate: new SliverChildListDelegate([
                             Container(
-                              height: 100,
+                              height: 120,
                               padding: EdgeInsets.only(left: 50, right: 50),
+                              decoration: BoxDecoration(
+                                  //shape: BoxShape.circle,
+                                  //color: Colors.white,
+                                  //border: Border.all(                                      width: 1.5, color: ColorLaw.blue),
+                                  //borderRadius:                                      BorderRadius.all(Radius.circular(5)),
+                                  image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: new AssetImage("assets/images/tug.jpg"),
+                              )),
                               child: Center(
                                 child: Text(
                                   view.slug.toUpperCase(),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 18,
-                                      color: ColorLaw.blue,
+                                      color: Colors.white,
                                       fontWeight: FontWeight.w600),
                                 ),
                               ),

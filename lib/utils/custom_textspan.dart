@@ -3,10 +3,12 @@ import 'package:law_app/utils/colorlaw.dart';
 
 TextStyle posRes = TextStyle(
         color: Colors.white,
+        fontSize: 16,
         backgroundColor: ColorLaw.blue,
         fontFamily: "Segoe"),
     negRes = TextStyle(
         color: Colors.black,
+        fontSize: 16,
         backgroundColor: Colors.transparent,
         fontFamily: "Segoe");
 

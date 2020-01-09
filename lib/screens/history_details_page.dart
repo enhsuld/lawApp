@@ -5,6 +5,7 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:law_app/models/taxonomy.dart';
 import 'package:law_app/models/term1.dart';
 import 'package:law_app/services/BackendService.dart';
+import 'package:law_app/utils/colorlaw.dart';
 import 'package:law_app/utils/timeline_entry_row.dart';
 
 class HistoryDetailsPage extends StatefulWidget {
@@ -54,7 +55,7 @@ class _HistoryDetailsPageState extends State<HistoryDetailsPage> {
           //   ),
           // ),
           PagewiseListView(
-              padding: EdgeInsets.all(0),
+              padding: EdgeInsets.only(top: 15),
               pageSize: PAGE_SIZE,
               itemBuilder: this._itemBuilder,
               pageFuture: (pageIndex) => BackendService.getHistoryList(
@@ -66,7 +67,7 @@ class _HistoryDetailsPageState extends State<HistoryDetailsPage> {
 
   Widget _itemBuilder(context, TaxonomyModel entry, _) {
     return new TimelineEntryRow(
-        lineColor: Theme.of(context).accentColor,
+        lineColor: ColorLaw.blue,
         backgroundColor: Theme.of(context).canvasColor,
         imagesBaseUrl: "",
         entry: entry);

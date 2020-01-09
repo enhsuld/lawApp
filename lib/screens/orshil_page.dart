@@ -59,8 +59,9 @@ class _OrshilPageState extends State<OrshilPage> {
               children: <Widget>[
                 (index == 0)
                     ? Container(
+                        height: 200,
                         padding: EdgeInsets.only(bottom: 15),
-                        child: Image.asset("assets/images/logo@2x.png"),
+                        child: Image.asset("assets/images/logo_large.png"),
                       )
                     : Container(),
                 Text(

@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:highlight_text/highlight_text.dart';
+// import 'package:highlight_text/highlight_text.dart';
 import 'package:law_app/models/term_law.dart';
 import 'package:law_app/utils/colorlaw.dart';
 import 'package:law_app/utils/custom_textspan.dart';
@@ -10,7 +10,7 @@ class TermVerticalItem extends StatelessWidget {
   final TermLawModel model;
   final int index;
   final String search;
-  Map<String, HighlightedWord> words = new HashMap();
+  // Map<String, HighlightedWord> words = new HashMap();
 
   TermVerticalItem(this.model, this.index, this.search);
 
@@ -23,18 +23,18 @@ class TermVerticalItem extends StatelessWidget {
       new TextStyle(color: Colors.white, backgroundColor: ColorLaw.blue);
 
   Widget _buildTiles(TermLawModel t) {
-    words = {
-      search: HighlightedWord(
-        onTap: () {},
-        textStyle: textStyle,
-      ),
-    };
+    // words = {
+    //   search: HighlightedWord(
+    //     onTap: () {},
+    //     textStyle: textStyle,
+    //   ),
+    // };
     return new ExpansionTile(
       key: PageStorageKey<int>(model.id),
       initiallyExpanded: (search != null && search.length > 0) ? true : false,
       title: new Text(
-        t?.slug ?? "",
-        style: TextStyle(color: ColorLaw.blue, fontWeight: FontWeight.w600),
+        (t?.slug ?? "").toUpperCase(),
+        style: TextStyle(color: ColorLaw.blue, fontWeight: FontWeight.w700),
       ),
       children: t.cntTermTaxonomies
           .map((data) => Container(
@@ -45,9 +45,9 @@ class TermVerticalItem extends StatelessWidget {
                   children: <Widget>[
                     Text(data.taxonomy + ".",
                         style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w800)),
+                            fontSize: 20,
+                            color: ColorLaw.blue,
+                            fontWeight: FontWeight.w700)),
                     SizedBox(
                       width: 8,
                     ),
