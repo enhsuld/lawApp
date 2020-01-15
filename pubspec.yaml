@@ -15,7 +15,7 @@ dependencies:
   carousel_slider: ^1.3.0
   http: ^0.12.0+2
   # expandable: ^3.0.1
-  expandable: ^4.0.0x
+  expandable: ^4.0.0
   flutter_share: ^1.0.2+1
   flutter_pagewise: ^1.2.3
   material_search: ^0.2.8
@@ -29,7 +29,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/logo_large.png"
+  image_path: "assets/images/suld.png"
 
 flutter:
   uses-material-design: true
