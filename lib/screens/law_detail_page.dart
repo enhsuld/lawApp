@@ -110,8 +110,8 @@ class _LawDetailPageState extends State<LawDetailPage> {
                 centerTitle: true,
                 backgroundColor: Colors.white,
                 title: Text(
-                  widget.term.name.toUpperCase(),
-                  style: TextStyle(color: ColorLaw.blue, fontSize: 16),
+                  "Үндсэн хууль".toUpperCase(),
+                  style: TextStyle(color: ColorLaw.blue, fontSize: 20),
                 ),
                 actions: <Widget>[
                   (search != null && search.length > 0)
