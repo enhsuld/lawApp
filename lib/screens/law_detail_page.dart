@@ -112,9 +112,7 @@ class _LawDetailPageState extends State<LawDetailPage> {
                 title: Text(
                   "Үндсэн хууль".toUpperCase(),
                   style: TextStyle(
-                      color: ColorLaw.blue,
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal),
+                      color: ColorLaw.blue, fontWeight: FontWeight.w700),
                 ),
                 actions: <Widget>[
                   (search != null && search.length > 0)
@@ -144,8 +142,9 @@ class _LawDetailPageState extends State<LawDetailPage> {
                 ],
                 bottom: TabBar(
                   isScrollable: true,
-                  labelStyle: TextStyle(fontWeight: FontWeight.w700),
-                  unselectedLabelStyle: TextStyle(),
+                  labelStyle: TextStyle(
+                      fontWeight: FontWeight.w700, fontFamily: "Fregat"),
+                  unselectedLabelStyle: TextStyle(fontFamily: "Fregat"),
                   labelColor: ColorLaw.blue,
                   //indicatorColor: ColorLaw.blue,
                   indicatorPadding: EdgeInsets.all(10),

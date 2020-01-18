@@ -37,7 +37,7 @@ class _TermItemState extends State<TermItem> {
       child: Material(
         elevation: 5.0,
         borderRadius: BorderRadius.circular(10.0),
-        color: Colors.white.withAlpha(200),
+        color: Colors.white.withAlpha(220),
         child: MaterialButton(
           minWidth: MediaQuery.of(context).size.width,
           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -84,10 +84,16 @@ class _TermItemState extends State<TermItem> {
                   width: 25,
                 ),
               ),
-              Text(widget.model.name,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: ColorLaw.blue, fontSize: 16, fontFamily: "Fregat"))
+              Flexible(
+                child: Text(widget.model.name,
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.clip,
+                    softWrap: false,
+                    style: TextStyle(
+                      color: ColorLaw.blue,
+                      fontSize: 19,
+                    )),
+              )
             ],
           ),
         ),

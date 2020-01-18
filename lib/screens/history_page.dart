@@ -51,7 +51,8 @@ class _HistoryPageState extends State<HistoryPage> {
           backgroundColor: Colors.white,
           title: Text(
             "Монгол улсын түүх".toUpperCase(),
-            style: TextStyle(color: Color(0xff1b4392), fontFamily: "Segoe"),
+            style: TextStyle(
+                color: Color(0xff1b4392), fontWeight: FontWeight.w700),
           ),
         ),
         body: ListView(
@@ -124,7 +125,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   softWrap: true,
                   style: TextStyle(
                       fontSize: 20,
-                      fontFamily: "Segoe",
+                      //fontFamily: "Segoe",
                       fontWeight: FontWeight.w400,
                       color: Colors.white),
                 ),

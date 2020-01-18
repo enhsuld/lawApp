@@ -1,5 +1,5 @@
 name: law_app
-description: A new Flutter project.
+description: Монгол Улсын Үндсэн хууль.
 
 version: 1.0.0+1
 
@@ -20,6 +20,7 @@ dependencies:
   flutter_pagewise: ^1.2.3
   material_search: ^0.2.8
   # highlight_text: ^0.7.2
+  shared_preferences: ^0.5.4+9
 
 dev_dependencies:
   flutter_test:
@@ -39,12 +40,12 @@ flutter:
         - asset: assets/fonts/SegoeUILight.ttf
     - family: Fregat
       fonts:
-        - asset: fonts/Fregat_Mon.ttf
-        - asset: fonts/Fregat_Italic_Mon.ttf
+        - asset: assets/fonts/Fregat_Mon.ttf
+        - asset: assets/fonts/Fregat_Italic_Mon.ttf
           style: italic
-        - asset: fonts/Fregat_Bold_Mon.ttf
+        - asset: assets/fonts/Fregat_Bold_Mon.ttf
           weight: 700
-        - asset: fonts/Fregat_Bold_Italic_Mon.ttf
+        - asset: assets/fonts/Fregat_Bold_Italic_Mon.ttf
           style: italic
           weight: 700
   assets:

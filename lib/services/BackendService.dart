@@ -5,6 +5,7 @@ import 'package:law_app/models/taxonomy.dart';
 import 'package:law_app/models/term.dart';
 import 'package:law_app/models/term1.dart';
 import 'package:law_app/models/term_law.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BackendService {
   //static String apiURL = "http://192.168.1.116:80/api/v1";
@@ -26,9 +27,22 @@ class BackendService {
   static Future<List<TermOnlyModel>> getTerm(offset, limit,
       {publish: '', filters: ''}) async {
     final response = (await http.get(apiURL + '/term/all'));
-    print(response.statusCode);
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'menu';
+    prefs.setBool("isMenu", true);
+    prefs.setString(key, response.body);
     print(json.decode(response.body));
     return TermOnlyModel.fromJsonList(jsonList: json.decode(response.body));
+  }
+
+  static Future<List<TermOnlyModel>> getTermOffline(offset, limit,
+      {publish: '', filters: ''}) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'menu';
+    final menus = prefs.getString(key) ?? "";
+    print('read: $menus');
+    // final response = (await http.get(apiURL + '/term/all'));
+    return TermOnlyModel.fromJsonList(jsonList: json.decode(menus));
   }
 
   static Future<List<TermModel>> getContentById(id) async {

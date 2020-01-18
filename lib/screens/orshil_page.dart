@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:law_app/models/taxonomy.dart';
-import 'package:law_app/models/term.dart';
 import 'package:law_app/models/term1.dart';
-import 'package:law_app/services/BackendService.dart';
 import 'package:law_app/utils/colorlaw.dart';
-import 'package:law_app/utils/timeline_entry_row.dart';
 
 class OrshilPage extends StatefulWidget {
   final TermOnlyModel term;
@@ -47,8 +42,8 @@ class _OrshilPageState extends State<OrshilPage> {
         backgroundColor: Colors.white,
         title: Text(
           "Оршил".toUpperCase(),
-          style: TextStyle(
-              color: Color(0xff1b4392), fontWeight: FontWeight.normal),
+          style:
+              TextStyle(color: Color(0xff1b4392), fontWeight: FontWeight.w700),
         ),
       ),
       body: ListView(

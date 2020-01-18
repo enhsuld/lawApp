@@ -31,7 +31,8 @@ class TermVerticalItem extends StatelessWidget {
     // };
     return new ExpansionTile(
       key: PageStorageKey<int>(model.id),
-      initiallyExpanded: (search != null && search.length > 0) ? true : false,
+      initiallyExpanded: true,
+      //(search != null && search.length > 0) ? true : false,
       title: new Text(
         (t?.slug ?? "").toUpperCase(),
         style: TextStyle(color: ColorLaw.blue, fontWeight: FontWeight.w500),

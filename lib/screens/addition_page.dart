@@ -49,8 +49,8 @@ class _AdditionPageState extends State<AdditionPage> {
         backgroundColor: Colors.white,
         title: Text(
           widget.term.name.toUpperCase(),
-          style: TextStyle(
-              color: Color(0xff1b4392), fontWeight: FontWeight.normal),
+          style:
+              TextStyle(color: Color(0xff1b4392), fontWeight: FontWeight.w700),
         ),
       ),
       body:
