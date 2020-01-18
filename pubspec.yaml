@@ -37,5 +37,15 @@ flutter:
     - family: Segoe
       fonts:
         - asset: assets/fonts/SegoeUILight.ttf
+    - family: Fregat
+      fonts:
+        - asset: fonts/Fregat_Mon.ttf
+        - asset: fonts/Fregat_Italic_Mon.ttf
+          style: italic
+        - asset: fonts/Fregat_Bold_Mon.ttf
+          weight: 700
+        - asset: fonts/Fregat_Bold_Italic_Mon.ttf
+          style: italic
+          weight: 700
   assets:
     - assets/images/

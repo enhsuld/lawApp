@@ -43,40 +43,41 @@ class _MainPageState extends State<MainPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      height: 260,
+                      height: 220,
                       padding: EdgeInsets.only(
                           top: 80, left: 50, right: 50, bottom: 10),
                       child: Image.asset("assets/images/logo_large.png"),
                     ),
                     Container(
                       padding: EdgeInsets.only(
-                          top: 15, left: 50, right: 50, bottom: 10),
+                          top: 15, bottom: 10, left: 8, right: 8),
                       child: Text(
                         'МОНГОЛ УЛСЫН ҮНДСЭН ХУУЛЬ',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 21.0,
+                          fontSize: 24.0,
+                          fontFamily: "Fregat",
                           color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(top: 20, bottom: 10),
+                      padding: EdgeInsets.only(top: 20),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Image.asset("assets/images/hee_home.png"),
-                          Image.asset("assets/images/hee_home.png"),
-                          Image.asset("assets/images/hee_home.png")
+                          // Image.asset("assets/images/hee_home.png"),
+                          // Image.asset("assets/images/hee_home.png")
                         ],
                       ),
                     ),
                     Container(
                       height: MediaQuery.of(context).size.height * 0.5,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
+                          horizontal: 30, vertical: 5),
                       child: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: publishedTerms.length,

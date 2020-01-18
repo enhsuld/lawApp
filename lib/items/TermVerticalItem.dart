@@ -34,7 +34,7 @@ class TermVerticalItem extends StatelessWidget {
       initiallyExpanded: (search != null && search.length > 0) ? true : false,
       title: new Text(
         (t?.slug ?? "").toUpperCase(),
-        style: TextStyle(color: ColorLaw.blue, fontWeight: FontWeight.w700),
+        style: TextStyle(color: ColorLaw.blue, fontWeight: FontWeight.w500),
       ),
       children: t.cntTermTaxonomies
           .map((data) => Container(
@@ -43,7 +43,10 @@ class TermVerticalItem extends StatelessWidget {
                   //key: Key(data.taxonnomy),
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(data.taxonomy + ".",
+                    Text(
+                        (data.taxonomy.length > 3)
+                            ? data.taxonomy.substring(0, 1)
+                            : data.taxonomy + ".",
                         style: TextStyle(
                             fontSize: 20,
                             color: ColorLaw.blue,

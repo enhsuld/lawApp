@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Law',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: textColor, fontFamily: 'Segoe'),
+      theme: ThemeData(primaryColor: textColor, fontFamily: 'Fregat'),
       home: SplashScreen(
         seconds: 3,
         navigateAfterSeconds: MainPage(),

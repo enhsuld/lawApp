@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:law_app/models/term.dart';
 import 'package:law_app/models/term1.dart';
+import 'package:law_app/screens/addition_detail_page.dart';
+import 'package:law_app/utils/fade_route.dart';
 
-class AdditionDetailPage extends StatefulWidget {
+class AdditionPage extends StatefulWidget {
   final TermOnlyModel term;
 
-  AdditionDetailPage({Key key, this.term});
+  AdditionPage({Key key, this.term});
 
-  _AdditionDetailPageState createState() => _AdditionDetailPageState();
+  _AdditionPageState createState() => _AdditionPageState();
 }
 
-class _AdditionDetailPageState extends State<AdditionDetailPage> {
+class _AdditionPageState extends State<AdditionPage> {
+  List<Map<String, dynamic>> _tabs = [];
+  List<String> _views = [];
+
   static const int PAGE_SIZE = 10;
   // List<TermModel> publishedTerms = [];
   List<TermModel> publishedTerms = [];
@@ -43,11 +48,9 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          widget.term.name + " оны " + widget.term.slug,
+          widget.term.name.toUpperCase(),
           style: TextStyle(
-              color: Color(0xff1b4392),
-              fontSize: 20,
-              fontWeight: FontWeight.normal),
+              color: Color(0xff1b4392), fontWeight: FontWeight.normal),
         ),
       ),
       body:
@@ -64,7 +67,14 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
                   border: Border.all(width: 1, color: Colors.grey[300]),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: RawMaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      FadeRoute(
+                          builder: (context) => AdditionDetailPage(
+                                term: widget.term.cntTerms[index],
+                              )));
+                },
                 child: Stack(
                   children: <Widget>[
                     Column(

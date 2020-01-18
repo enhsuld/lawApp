@@ -21,13 +21,13 @@ class _OrshilPageState extends State<OrshilPage> {
   void initState() {
     super.initState();
 
-    BackendService.getOrshilList("111", 0, 10).then((onValue) {
-      if (onValue != null) {
-        setState(() {
-          terms = onValue;
-        });
-      }
-    });
+    // BackendService.getOrshilList("111", 0, 10).then((onValue) {
+    //   if (onValue != null) {
+    //     setState(() {
+    //       terms = onValue;
+    //     });
+    //   }
+    // });
   }
 
   @override
@@ -47,13 +47,14 @@ class _OrshilPageState extends State<OrshilPage> {
         backgroundColor: Colors.white,
         title: Text(
           "Оршил".toUpperCase(),
-          style: TextStyle(color: Color(0xff1b4392)),
+          style: TextStyle(
+              color: Color(0xff1b4392), fontWeight: FontWeight.normal),
         ),
       ),
       body: ListView(
         padding: EdgeInsets.only(top: 20, left: 15, right: 15),
-        children: List.generate(terms.length, (index) {
-          TermOnlyModel model = terms[index];
+        children: List.generate(widget.term.cntTerms.length, (index) {
+          TermOnlyModel model = widget.term.cntTerms[index];
           return Center(
             child: Column(
               children: <Widget>[
@@ -69,7 +70,7 @@ class _OrshilPageState extends State<OrshilPage> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 18,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w500,
                       color: ColorLaw.blue),
                 ),
                 SizedBox(height: 10)

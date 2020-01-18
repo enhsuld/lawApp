@@ -111,7 +111,10 @@ class _LawDetailPageState extends State<LawDetailPage> {
                 backgroundColor: Colors.white,
                 title: Text(
                   "Үндсэн хууль".toUpperCase(),
-                  style: TextStyle(color: ColorLaw.blue, fontSize: 20),
+                  style: TextStyle(
+                      color: ColorLaw.blue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal),
                 ),
                 actions: <Widget>[
                   (search != null && search.length > 0)
@@ -144,7 +147,18 @@ class _LawDetailPageState extends State<LawDetailPage> {
                   labelStyle: TextStyle(fontWeight: FontWeight.w700),
                   unselectedLabelStyle: TextStyle(),
                   labelColor: ColorLaw.blue,
-                  indicatorColor: ColorLaw.blue,
+                  //indicatorColor: ColorLaw.blue,
+                  indicatorPadding: EdgeInsets.all(10),
+                  indicator: UnderlineTabIndicator(
+                      borderSide: BorderSide(width: 5.0, color: ColorLaw.blue),
+                      insets: EdgeInsets.symmetric(horizontal: 16.0)),
+                  // BoxDecoration(
+                  //     color: ColorLaw.blue,
+                  //     borderRadius: BorderRadius.only(
+                  //         topLeft: Radius.circular(10),
+                  //         topRight: Radius.circular(10))),
+                  indicatorSize: TabBarIndicatorSize.label,
+                  //indicatorSize: TabBarIndicatorSize.label,
                   tabs:
                       publishedTerms.map((tab) => Tab(text: tab.name)).toList(),
                 ),
