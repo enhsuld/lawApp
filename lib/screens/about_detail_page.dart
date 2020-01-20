@@ -86,7 +86,7 @@ class _AboutDetailPageState extends State<AboutDetailPage> {
                                 open(context, index, _term.medias);
                               },
                               child: FadeInImage.assetNetwork(
-                                fadeInCurve: Curves.bounceIn,
+                                //fadeInCurve: Curves.bounceIn,
                                 placeholder: "assets/images/no_image.png",
                                 //fit: BoxFit.fitWidth,
                                 image:

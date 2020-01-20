@@ -95,7 +95,7 @@ class _HistoryPageState extends State<HistoryPage> {
             Center(
               child: FadeInImage.assetNetwork(
                 fit: BoxFit.cover,
-                fadeInCurve: Curves.bounceIn,
+                //fadeInCurve: Curves.bounceIn,
                 width: double.infinity,
                 placeholder: "assets/images/no_image.png",
                 image: ((entry?.medias ?? []).length > 0)
