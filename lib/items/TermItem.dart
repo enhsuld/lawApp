@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:law_app/models/term1.dart';
+import 'package:law_app/screens/about_page.dart';
 import 'package:law_app/screens/addition_page.dart';
 import 'package:law_app/screens/history_page.dart';
 import 'package:law_app/screens/law_detail_page.dart';
@@ -52,13 +53,17 @@ class _TermItemState extends State<TermItem> {
               print(widget.model);
               Navigator.of(context).push(FadeRoute(
                   builder: (context) => AdditionPage(term: widget.model)));
+            } else if (widget.model.slug == "1") {
+              print(widget.model);
+              Navigator.of(context).push(FadeRoute(
+                  builder: (context) => AboutPage(term: widget.model)));
             } else if (widget.model.slug == "5") {
               Navigator.of(context).push(FadeRoute(
                   builder: (context) => HistoryPage(term: widget.model)));
-            } else if (widget.model.slug == "0") {
+            } else if (widget.model.slug == "2") {
               Navigator.of(context).push(FadeRoute(
                   builder: (context) => OrshilPage(term: widget.model)));
-            } else {
+            } else if (widget.model.slug == "3") {
               Navigator.of(context).push(FadeRoute(
                   builder: (context) => LawDetailPage(term: widget.model)));
             }

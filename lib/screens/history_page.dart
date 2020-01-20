@@ -89,7 +89,7 @@ class _HistoryPageState extends State<HistoryPage> {
         //margin: EdgeInsets.only(top: 5),
         height: 250,
         //padding: EdgeInsets.all(2),
-        color: Colors.blue.withAlpha(100),
+        //color: Colors.blue.withAlpha(100),
         child: Stack(
           children: <Widget>[
             Center(
@@ -104,31 +104,46 @@ class _HistoryPageState extends State<HistoryPage> {
               ),
             ),
             //Image.network("src"),
+            Container(
+              padding: EdgeInsets.only(bottom: 7, top: 3, left: 10),
+              width: double.infinity,
+              height: 250,
+              decoration: BoxDecoration(color: Colors.black.withAlpha(150)),
+            ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
                 padding: EdgeInsets.only(bottom: 7, top: 3, left: 10),
                 width: double.infinity,
-                decoration: BoxDecoration(
-                    gradient:
-                        LinearGradient(begin: Alignment.bottomRight, colors: [
-                  ColorLaw.blue,
-                  ColorLaw.blue.withAlpha(150),
-                ])
-                    // borderRadius: BorderRadius.only(
-                    //     topLeft: Radius.circular(8),
-                    //     topRight: Radius.circular(8)),
-                    ),
+                //height: 250,
+                // decoration: BoxDecoration(
+                //     //     gradient:
+                //     //         LinearGradient(begin: Alignment.bottomRight, colors: [
+                //     //   Colors.black,
+                //     //   Colors.black.withAlpha(150),
+                //     // ])
+                //     color: Colors.black.withAlpha(90)
+                //     // borderRadius: BorderRadius.only(
+                //     //     topLeft: Radius.circular(8),
+                //     //     topRight: Radius.circular(8)),
+                //     ),
                 child: Text(
                   entry.name,
                   textAlign: TextAlign.left,
                   softWrap: true,
                   style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 28,
                       //fontFamily: "Segoe",
                       fontWeight: FontWeight.w400,
                       color: Colors.white),
                 ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Divider(
+                height: 1,
+                color: Colors.white.withAlpha(80),
               ),
             )
           ],

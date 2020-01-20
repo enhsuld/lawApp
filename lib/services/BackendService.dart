@@ -4,6 +4,7 @@ import 'package:law_app/models/history.dart';
 import 'package:law_app/models/taxonomy.dart';
 import 'package:law_app/models/term.dart';
 import 'package:law_app/models/term1.dart';
+import 'package:law_app/models/termChild.dart';
 import 'package:law_app/models/term_law.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,6 +51,13 @@ class BackendService {
     print(response.statusCode);
     print(json.decode(response.body));
     return TermModel.fromJsonList(json.decode(response.body));
+  }
+
+  static Future<TermChildModel> getTermById(id) async {
+    final response = (await http.get(apiURL + '/term/item/$id'));
+    print(response.statusCode);
+    print(json.decode(response.body));
+    return TermChildModel.fromJson(json.decode(response.body));
   }
 
   static Future<List<TermLawModel>> getLawSearch({keyword: ""}) async {

@@ -33,7 +33,8 @@ class _HistoryDetailsPageState extends State<HistoryDetailsPage> {
         backgroundColor: Colors.white,
         title: Text(
           "Монгол улсын түүх".toUpperCase(),
-          style: TextStyle(color: Color(0xff1b4392)),
+          style:
+              TextStyle(color: Color(0xff1b4392), fontWeight: FontWeight.w700),
         ),
       ),
       body: Stack(
