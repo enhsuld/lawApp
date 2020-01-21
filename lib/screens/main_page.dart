@@ -26,23 +26,29 @@ class _MainPageState extends State<MainPage> {
     final key = 'isMenu';
     final value = prefs.getBool(key) ?? false;
     print('read: $value');
-    if (value) {
-      print("offline");
-      BackendService.getTermOffline(0 + 1, PAGE_SIZE).then((terms) {
-        setState(() {
-          this.publishedTerms = terms;
-          print(terms);
-        });
+    // if (value) {
+    //   print("offline");
+    //   BackendService.getTermOffline(0 + 1, PAGE_SIZE).then((terms) {
+    //     setState(() {
+    //       this.publishedTerms = terms;
+    //       print(terms);
+    //     });
+    //   });
+    // } else {
+    //   print("online");
+    //   BackendService.getTerm(0 + 1, PAGE_SIZE).then((terms) {
+    //     setState(() {
+    //       this.publishedTerms = terms;
+    //       print(terms);
+    //     });
+    //   });
+    // }
+    BackendService.getTerm(0 + 1, PAGE_SIZE).then((terms) {
+      setState(() {
+        this.publishedTerms = terms;
+        print(terms);
       });
-    } else {
-      print("online");
-      BackendService.getTerm(0 + 1, PAGE_SIZE).then((terms) {
-        setState(() {
-          this.publishedTerms = terms;
-          print(terms);
-        });
-      });
-    }
+    });
   }
 
   @override
