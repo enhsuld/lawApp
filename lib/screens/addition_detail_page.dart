@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:law_app/models/taxonomy.dart';
 import 'package:law_app/models/term1.dart';
-import 'package:law_app/models/termChild.dart';
+import 'package:law_app/models/termTaxonomy.dart';
 import 'package:law_app/services/BackendService.dart';
 import 'package:law_app/utils/colorlaw.dart';
 
@@ -15,14 +16,14 @@ class AdditionDetailPage extends StatefulWidget {
 class _AdditionDetailPageState extends State<AdditionDetailPage> {
   static const int PAGE_SIZE = 10;
   // List<TermModel> publishedTerms = [];
-  TermChildModel publishedTerms;
+  TermTaxonomyModel publishedTerms;
   bool isLoad = false;
 
   @override
   void initState() {
     super.initState();
 
-    BackendService.getTermById(widget.term.id).then((terms) {
+    BackendService.getTermTaxonomyById(widget.term.id).then((terms) {
       setState(() {
         this.publishedTerms = terms;
         isLoad = true;
@@ -59,6 +60,8 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
                 padding: EdgeInsets.only(top: 10, left: 15, right: 15),
                 children:
                     List.generate(publishedTerms.cntTerms.length, (index) {
+                  TermTaxonomyModel model = publishedTerms.cntTerms[index];
+                  TaxonomyModel taxonomyModel = model.taxonomies[0];
                   return Container(
                     margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                     child: RawMaterialButton(
@@ -99,8 +102,9 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
                             height: 10,
                           ),
                           Text(
-                            "Улсын Их Хурлын чуулганы нэгдсэн болон Байнгын хорооны хуралдааныг гишүүдийн олонхи нь хүрэлцэн ирснээр хүчинтэйд үзэж, Үндсэн хуульд өөрөөр заагаагүй бол хуралдаанд оролцсон гишүүдийн олонхийн саналаар асуудлыг шийдвэрлэнэ. Үндсэн хуульд өөрөөр заагаагүй бол хуулийг Улсын Их Хурлын нийт гишүүний олонхийн саналаар батална.",
+                            taxonomyModel?.description ?? "",
                             textAlign: TextAlign.justify,
+                            style: TextStyle(fontSize: 18),
                           ),
                           SizedBox(height: 15),
                           Divider(color: Colors.grey)
