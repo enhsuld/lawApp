@@ -3,14 +3,14 @@ import 'package:law_app/utils/colorlaw.dart';
 
 TextStyle posRes = TextStyle(
         color: Colors.white,
-        fontSize: 16,
+        fontSize: 18,
         backgroundColor: ColorLaw.blue,
-        fontFamily: "Segoe"),
+        fontFamily: "Fregat"),
     negRes = TextStyle(
         color: Colors.black,
-        fontSize: 16,
+        fontSize: 18,
         backgroundColor: Colors.transparent,
-        fontFamily: "Segoe");
+        fontFamily: "Fregat");
 
 final text = '''
 Call me Ishmael. Some years ago—never mind how long precisely—having

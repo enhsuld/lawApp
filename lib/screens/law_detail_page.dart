@@ -186,9 +186,9 @@ class _LawDetailPageState extends State<LawDetailPage> {
                                   view.slug.toUpperCase(),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 19,
                                       color: Colors.white,
-                                      fontWeight: FontWeight.w600),
+                                      fontWeight: FontWeight.w700),
                                 ),
                               ),
                             ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:law_app/models/term.dart';
 import 'package:law_app/models/term1.dart';
@@ -85,12 +86,24 @@ class _AboutDetailPageState extends State<AboutDetailPage> {
                               onPressed: () {
                                 open(context, index, _term.medias);
                               },
-                              child: FadeInImage.assetNetwork(
-                                //fadeInCurve: Curves.bounceIn,
-                                placeholder: "assets/images/no_image.png",
-                                //fit: BoxFit.fitWidth,
-                                image:
-                                    BackendService.link + _term.medias[index],
+                              child:
+                                  // FadeInImage.assetNetwork(
+                                  //   //fadeInCurve: Curves.bounceIn,
+                                  //   placeholder: "assets/images/no_image.png",
+                                  //   //fit: BoxFit.fitWidth,
+                                  //   image:
+                                  //       BackendService.link + _term.medias[index],
+                                  // ),
+                                  Center(
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.cover,
+                                  imageUrl:
+                                      BackendService.link + _term.medias[index],
+                                  placeholder: (context, url) =>
+                                      CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset("assets/images/no_image.png"),
+                                ),
                               ),
                             ),
                           );

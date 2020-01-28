@@ -247,15 +247,17 @@ class TimelineEntryRow extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width - 64,
-                  child: new Text(entry?.taxonomy ?? "",
-                      textAlign: TextAlign.justify,
-                      style: new TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold)),
-                ),
+                (entry?.taxonomy ?? "").length > 0
+                    ? Container(
+                        width: MediaQuery.of(context).size.width - 64,
+                        child: new Text(entry?.taxonomy ?? "",
+                            textAlign: TextAlign.justify,
+                            style: new TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
+                      )
+                    : Container(),
                 Container(
                     width: MediaQuery.of(context).size.width - 68,
                     child: new Text(

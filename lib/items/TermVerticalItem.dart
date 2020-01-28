@@ -34,7 +34,8 @@ class TermVerticalItem extends StatelessWidget {
       initiallyExpanded: (search != null && search.length > 0) ? true : false,
       title: new Text(
         (t?.slug ?? "").toUpperCase(),
-        style: TextStyle(color: ColorLaw.blue, fontWeight: FontWeight.w500),
+        style: TextStyle(
+            color: ColorLaw.blue, fontSize: 18, fontWeight: FontWeight.w500),
       ),
       children: t.cntTermTaxonomies
           .map((data) => Container(

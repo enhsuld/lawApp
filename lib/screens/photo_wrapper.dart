@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:law_app/services/BackendService.dart';
 import 'package:photo_view/photo_view.dart';
@@ -112,7 +113,8 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
     final String item = widget.galleryItems[index];
     return PhotoViewGalleryPageOptions(
-      imageProvider: NetworkImage(BackendService.link + item),
+      // imageProvider: NetworkImage(BackendService.link + item),
+      imageProvider: CachedNetworkImageProvider(BackendService.link + item),
       initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained * (0.5 + index / 10),
       maxScale: PhotoViewComputedScale.covered * 1.1,

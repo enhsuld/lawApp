@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:law_app/models/history.dart';
 import 'package:law_app/models/term1.dart';
@@ -90,15 +91,27 @@ class _HistoryPageState extends State<HistoryPage> {
         color: Colors.blue.withAlpha(100),
         child: Stack(
           children: <Widget>[
+            // Center(
+            //   child: FadeInImage.assetNetwork(
+            //     fit: BoxFit.cover,
+            //     //fadeInCurve: Curves.bounceIn,
+            //     width: double.infinity,
+            //     placeholder: "assets/images/no_image.png",
+            //     image: ((entry?.medias ?? []).length > 0)
+            //         ? BackendService.link + entry.medias[0]
+            //         : "",
+            //   ),
+            // ),
             Center(
-              child: FadeInImage.assetNetwork(
+              child: CachedNetworkImage(
                 fit: BoxFit.cover,
-                //fadeInCurve: Curves.bounceIn,
                 width: double.infinity,
-                placeholder: "assets/images/no_image.png",
-                image: ((entry?.medias ?? []).length > 0)
+                imageUrl: ((entry?.medias ?? []).length > 0)
                     ? BackendService.link + entry.medias[0]
                     : "",
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) =>
+                    Image.asset("assets/images/no_image.png"),
               ),
             ),
             //Image.network("src"),
@@ -111,7 +124,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     gradient:
                         LinearGradient(begin: Alignment.bottomRight, colors: [
                   Colors.black,
-                  Colors.black.withAlpha(100),
+                  Colors.black.withAlpha(50),
                 ])
                     // borderRadius: BorderRadius.only(
                     //     topLeft: Radius.circular(8),
