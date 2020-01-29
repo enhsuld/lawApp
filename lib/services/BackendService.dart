@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:law_app/models/content.dart';
 import 'package:law_app/models/history.dart';
 import 'package:law_app/models/taxonomy.dart';
 import 'package:law_app/models/term.dart';
@@ -59,6 +60,13 @@ class BackendService {
     print(response.statusCode);
     print(json.decode(response.body));
     return TermChildModel.fromJson(json.decode(response.body));
+  }
+
+  static Future<ContentModel> getContentId(id) async {
+    final response = (await http.get(apiURL + '/content/item/$id'));
+    print(response.statusCode);
+    print(json.decode(response.body));
+    return ContentModel.fromJson(json.decode(response.body));
   }
 
   static Future<TermTaxonomyModel> getTermTaxonomyById(id) async {
