@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:law_app/models/history.dart';
@@ -6,7 +8,9 @@ import 'package:law_app/screens/history_details_page.dart';
 import 'package:law_app/services/BackendService.dart';
 import 'package:law_app/utils/colorlaw.dart';
 import 'package:law_app/utils/fade_route.dart';
-import 'package:law_app/utils/timeline_entry_row.dart';
+import 'package:network_to_file_image/network_to_file_image.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 class HistoryPage extends StatefulWidget {
   final TermOnlyModel term;
@@ -18,6 +22,7 @@ class _HistoryPageState extends State<HistoryPage> {
   static const int PAGE_SIZE = 10;
 
   List<HistoryModel> historys = List();
+  File file;
 
   @override
   void initState() {
@@ -31,6 +36,13 @@ class _HistoryPageState extends State<HistoryPage> {
         });
       }
     });
+    //file = getFile("filename");
+  }
+
+  File getFile(String filename) {
+    Directory dir = new Directory('dir'); //getApplicationDocumentsDirectory();
+    String pathName = p.join(dir.path, filename);
+    return File(pathName);
   }
 
   @override
@@ -74,6 +86,7 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Widget _itemBuilder(context, HistoryModel entry, _) {
+    //File file = getFile("filename");
     Color _color = _ % 2 == 0 ? Colors.lightBlue : ColorLaw.blue;
     return InkWell(
       onTap: () {
@@ -103,15 +116,26 @@ class _HistoryPageState extends State<HistoryPage> {
             //   ),
             // ),
             Center(
-              child: CachedNetworkImage(
-                fit: BoxFit.cover,
+              child:
+                  // CachedNetworkImage(
+                  //   fit: BoxFit.cover,
+                  //   width: double.infinity,
+                  //   imageUrl: ((entry?.medias ?? []).length > 0)
+                  //       ? BackendService.link + entry.medias[0]
+                  //       : "",
+                  //   placeholder: (context, url) => CircularProgressIndicator(),
+                  //   errorWidget: (context, url, error) =>
+                  //       Image.asset("assets/images/no_image.png"),
+                  // ),
+                  Image(
                 width: double.infinity,
-                imageUrl: ((entry?.medias ?? []).length > 0)
-                    ? BackendService.link + entry.medias[0]
-                    : "",
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) =>
-                    Image.asset("assets/images/no_image.png"),
+                fit: BoxFit.cover,
+                image: NetworkToFileImage(
+                    url: ((entry?.medias ?? []).length > 0)
+                        ? BackendService.link + entry.medias[0]
+                        : "",
+                    file: getFile("hostory-$_.jpg"),
+                    debug: true),
               ),
             ),
             //Image.network("src"),
