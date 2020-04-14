@@ -22,10 +22,10 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
   @override
   void initState() {
     super.initState();
-
     BackendService.getTermTaxonomyById(widget.term.id).then((terms) {
       setState(() {
         this.publishedTerms = terms;
+        print(publishedTerms.cntTerms.length);
         isLoad = true;
       });
     });
@@ -58,8 +58,8 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
           ? Container(
               child: ListView(
                 padding: EdgeInsets.only(top: 10, left: 15, right: 15),
-                children:
-                    List.generate(publishedTerms.cntTerms.length, (index) {
+                children: List.generate(publishedTerms?.cntTerms?.length,
+                    (index) {
                   TermTaxonomyModel model = publishedTerms.cntTerms[index];
                   TaxonomyModel taxonomyModel = model.taxonomies[0];
                   return Container(
