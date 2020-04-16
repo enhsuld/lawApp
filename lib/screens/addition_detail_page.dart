@@ -22,10 +22,11 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
   @override
   void initState() {
     super.initState();
-
+    print("ids " + widget.term.id.toString());
     BackendService.getTermTaxonomyById(widget.term.id).then((terms) {
       setState(() {
         this.publishedTerms = terms;
+        print(publishedTerms.cntTerms.length);
         isLoad = true;
       });
     });
@@ -33,6 +34,7 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(publishedTerms?.cntTerms?.length);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -59,9 +61,11 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
               child: ListView(
                 padding: EdgeInsets.only(top: 10, left: 15, right: 15),
                 children:
-                    List.generate(publishedTerms.cntTerms.length, (index) {
+                    List.generate(publishedTerms?.cntTerms?.length, (index) {
                   TermTaxonomyModel model = publishedTerms.cntTerms[index];
-                  TaxonomyModel taxonomyModel = model.taxonomies[0];
+                  TaxonomyModel taxonomyModel;
+                  if (model.taxonomies != null && model.taxonomies.length > 0)
+                    TaxonomyModel taxonomyModel = model.taxonomies[0];
                   return Container(
                     margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                     child: RawMaterialButton(

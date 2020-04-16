@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:law_app/models/term.dart';
 import 'package:law_app/models/term1.dart';
-import 'package:law_app/models/termChild.dart';
 import 'package:law_app/screens/about_detail_page.dart';
 import 'package:law_app/screens/addition_detail_page.dart';
 import 'package:law_app/utils/fade_route.dart';
@@ -74,6 +73,8 @@ class _AdditionPageState extends State<AdditionPage> {
   }
 
   _itemAddition(index) {
+    print("size " + widget.term.cntTerms.length.toString());
+    print("index $index");
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       decoration: BoxDecoration(
