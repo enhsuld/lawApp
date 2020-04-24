@@ -1,0 +1,8 @@
+app_identifier("mn.law.constitution") # The bundle identifier of your app
+apple_id("publicinvestment1@gmail.com") # Your Apple email address
+
+itc_team_id("120288285") # App Store Connect Team ID
+team_id("SP5653AVBL") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
