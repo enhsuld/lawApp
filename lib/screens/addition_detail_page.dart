@@ -65,7 +65,8 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
                   TermTaxonomyModel model = publishedTerms.cntTerms[index];
                   TaxonomyModel taxonomyModel;
                   if (model.taxonomies != null && model.taxonomies.length > 0)
-                    TaxonomyModel taxonomyModel = model.taxonomies[0];
+                    taxonomyModel = model.taxonomies[0];
+
                   return Container(
                     margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                     child: RawMaterialButton(
