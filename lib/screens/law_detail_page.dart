@@ -5,7 +5,7 @@ import 'package:law_app/models/term1.dart';
 import 'package:law_app/models/term_law.dart';
 import 'package:law_app/services/BackendService.dart';
 import 'package:law_app/utils/colorlaw.dart';
-import 'package:material_search/material_search.dart';
+import 'package:law_app/utils/material_search.dart';
 
 class LawDetailPage extends StatefulWidget {
   final TermOnlyModel term;
@@ -51,7 +51,6 @@ class _LawDetailPageState extends State<LawDetailPage> {
     return new MaterialPageRoute<String>(
         settings: new RouteSettings(
           name: 'material_search',
-          isInitialRoute: false,
         ),
         builder: (BuildContext context) {
           return new Material(
