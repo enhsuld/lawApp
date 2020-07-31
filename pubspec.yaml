@@ -18,13 +18,13 @@ dependencies:
   expandable: ^4.0.0
   flutter_share: ^1.0.2+1
   flutter_pagewise: ^1.2.3
-  material_search: ^0.2.8
+  # material_search: ^0.2.8
   # highlight_text: ^0.7.2
   shared_preferences: ^0.5.4+9
   connectivity: ^0.4.6+2
   photo_view: ^0.9.1
   cached_network_image: ^2.0.0
-  network_to_file_image: ^2.2.4
+  network_to_file_image: ^2.3.1
   path_provider: ^1.5.1
 
 dev_dependencies:
