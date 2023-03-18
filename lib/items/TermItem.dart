@@ -23,14 +23,6 @@ class _TermItemState extends State<TermItem> {
   TextStyle style =
       TextStyle(fontFamily: 'Roboto', color: Colors.white, fontSize: 15.0);
 
-  Future<void> share() async {
-    await FlutterShare.share(
-        title: 'Example share',
-        text: 'Example share text',
-        linkUrl: 'https://flutter.dev/',
-        chooserTitle: 'Example Chooser Title');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,7 +39,7 @@ class _TermItemState extends State<TermItem> {
               FlutterShare.share(
                   title: 'Монгол Улсын Үндсэн хууль',
                   text: 'Монгол Улсын Үндсэн хууль',
-                  linkUrl: 'https://pimis.mof.gov.mn/conslaw',
+                  linkUrl: 'https://onelink.to/conslaw',
                   chooserTitle: 'Түгээх боломжтой');
             } else if (widget.model.slug == "4") {
               print(widget.model);
