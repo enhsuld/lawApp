@@ -6,17 +6,17 @@ import 'package:photo_view/photo_view_gallery.dart';
 
 class GalleryPhotoViewWrapper extends StatefulWidget {
   GalleryPhotoViewWrapper({
-    this.loadingChild,
-    this.backgroundDecoration,
+    // required this.loadingChild,
+    required this.backgroundDecoration,
     this.minScale,
     this.maxScale,
-    this.initialIndex,
-    @required this.galleryItems,
+    required this.initialIndex,
+    required this.galleryItems,
     this.scrollDirection = Axis.horizontal,
   }) : pageController = PageController(initialPage: initialIndex);
 
-  final Widget loadingChild;
-  final Decoration backgroundDecoration;
+  // final Widget loadingChild;
+  final BoxDecoration backgroundDecoration;
   final dynamic minScale;
   final dynamic maxScale;
   final int initialIndex;
@@ -31,7 +31,7 @@ class GalleryPhotoViewWrapper extends StatefulWidget {
 }
 
 class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
-  int currentIndex;
+  int? currentIndex;
 
   @override
   void initState() {
@@ -62,7 +62,7 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
               scrollPhysics: const BouncingScrollPhysics(),
               builder: _buildItem,
               itemCount: widget.galleryItems.length,
-              loadingChild: widget.loadingChild,
+              // loadingChild: widget.loadingChild,
               backgroundDecoration: widget.backgroundDecoration,
               pageController: widget.pageController,
               onPageChanged: onPageChanged,
@@ -77,7 +77,7 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
                     color: Colors.black.withAlpha(150),
                     borderRadius: BorderRadius.all(Radius.circular(5))),
                 child: Text(
-                  "${currentIndex + 1}/" +
+                  "${(currentIndex ?? 0) + 1}/" +
                       widget.galleryItems.length.toString(),
                   style: const TextStyle(
                     color: Colors.white,

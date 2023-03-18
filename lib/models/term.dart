@@ -1,12 +1,12 @@
 import 'package:law_app/models/taxonomy.dart';
 
 class TermModel {
-  final int id;
-  final String name;
-  final String slug;
-  final int parentId;
-  final List<dynamic> cntTerms;
-  final List<dynamic> cntTermTaxonomies;
+  final int? id;
+  final String? name;
+  final String? slug;
+  final int? parentId;
+  final List<dynamic>? cntTerms;
+  final List<dynamic>? cntTermTaxonomies;
 
   //const TermModel({this.id, this.name, this.slug, this.parentId});
 

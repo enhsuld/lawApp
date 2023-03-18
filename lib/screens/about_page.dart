@@ -8,7 +8,7 @@ import 'package:law_app/utils/fade_route.dart';
 class AboutPage extends StatefulWidget {
   final TermOnlyModel term;
 
-  AboutPage({Key key, this.term});
+  AboutPage({required this.term});
 
   _AboutPageState createState() => _AboutPageState();
 }
@@ -41,7 +41,7 @@ class _AboutPageState extends State<AboutPage> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          widget.term.name.toUpperCase(),
+          (widget.term.name ?? "").toUpperCase(),
           style:
               TextStyle(color: Color(0xff1b4392), fontWeight: FontWeight.w700),
         ),
@@ -53,11 +53,11 @@ class _AboutPageState extends State<AboutPage> {
           crossAxisCount: 2,
           childAspectRatio: 0.75,
           padding: EdgeInsets.only(top: 10, left: 15, right: 15),
-          children: List.generate(widget.term.cntTerms.length, (index) {
+          children: List.generate(widget.term.cntTerms!.length, (index) {
             return Container(
               margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
               decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: Colors.grey[300]),
+                  border: Border.all(width: 1, color: Colors.grey[300]!),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: RawMaterialButton(
                 onPressed: () {
@@ -65,7 +65,7 @@ class _AboutPageState extends State<AboutPage> {
                       context,
                       FadeRoute(
                           builder: (context) => AboutDetailPage(
-                                term: widget.term.cntTerms[index],
+                                term: widget.term.cntTerms![index],
                               )));
                 },
                 child: Stack(
@@ -78,7 +78,7 @@ class _AboutPageState extends State<AboutPage> {
                           child: Image.asset("assets/images/logo_large.png"),
                         ),
                         Text(
-                          widget.term.cntTerms[index].name,
+                          widget.term.cntTerms![index].name,
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 20),
                         )

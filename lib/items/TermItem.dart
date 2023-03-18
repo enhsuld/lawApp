@@ -47,7 +47,7 @@ class _TermItemState extends State<TermItem> {
               FlutterShare.share(
                   title: 'Монгол Улсын Үндсэн хууль',
                   text: 'Монгол Улсын Үндсэн хууль',
-                  linkUrl: 'http://conslaw.ml',
+                  linkUrl: 'https://pimis.mof.gov.mn/conslaw',
                   chooserTitle: 'Түгээх боломжтой');
             } else if (widget.model.slug == "4") {
               print(widget.model);
@@ -90,7 +90,7 @@ class _TermItemState extends State<TermItem> {
                 ),
               ),
               Flexible(
-                child: Text(widget.model.name,
+                child: Text(widget.model.name ?? "",
                     textAlign: TextAlign.left,
                     overflow: TextOverflow.clip,
                     softWrap: false,

@@ -3,7 +3,6 @@ import 'package:law_app/screens/main_page.dart';
 import 'package:law_app/services/BackendService.dart';
 import 'package:law_app/utils/fade_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:splashscreen/splashscreen.dart';
 
 /*void main() => runApp(MyApp());*/
 
@@ -47,22 +46,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Law',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primaryColor: MyApp.textColor, fontFamily: 'Fregat'),
-      home: SplashScreen(
-        seconds: 3,
-        navigateAfterSeconds: MainPage(),
-        imageBackground:
-            ExactAssetImage('assets/images/Default-896h@2x_iphone.png'),
-        gradientBackground: new LinearGradient(
-            colors: [Colors.cyan, Colors.blue],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight),
-        backgroundColor: Colors.white,
-        styleTextUnderTheLoader: new TextStyle(),
-        photoSize: 100.0,
-        onClick: () => Navigator.of(context)
-            .push(FadeRoute(builder: (context) => MainPage())),
-        loaderColor: Colors.red,
-      ),
+      home: MainPage(),
     );
   }
 }

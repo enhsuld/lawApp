@@ -8,7 +8,7 @@ import 'package:law_app/utils/fade_route.dart';
 class AdditionPage extends StatefulWidget {
   final TermOnlyModel term;
 
-  AdditionPage({Key key, this.term});
+  AdditionPage({required this.term});
 
   _AdditionPageState createState() => _AdditionPageState();
 }
@@ -49,7 +49,7 @@ class _AdditionPageState extends State<AdditionPage> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          widget.term.name.toUpperCase(),
+          (widget.term.name ?? "").toUpperCase(),
           style:
               TextStyle(color: Color(0xff1b4392), fontWeight: FontWeight.w700),
         ),
@@ -61,9 +61,9 @@ class _AdditionPageState extends State<AdditionPage> {
           crossAxisCount: 2,
           childAspectRatio: 0.75,
           padding: EdgeInsets.only(top: 10, left: 15, right: 15),
-          children: List.generate(widget.term.cntTerms.length, (index) {
-            TermOnlyModel childModel = widget.term.cntTerms[index];
-            return childModel.slug.length == 4
+          children: List.generate((widget.term.cntTerms?.length ?? 0), (index) {
+            TermOnlyModel childModel = widget.term.cntTerms![index];
+            return childModel.slug?.length == 4
                 ? _itemCons(index)
                 : _itemAddition(index);
           }),
@@ -73,12 +73,11 @@ class _AdditionPageState extends State<AdditionPage> {
   }
 
   _itemAddition(index) {
-    print("size " + widget.term.cntTerms.length.toString());
     print("index $index");
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       decoration: BoxDecoration(
-          border: Border.all(width: 1, color: Colors.grey[300]),
+          border: Border.all(width: 1, color: Colors.grey[300]!),
           borderRadius: BorderRadius.all(Radius.circular(10))),
       child: RawMaterialButton(
         onPressed: () {
@@ -86,7 +85,7 @@ class _AdditionPageState extends State<AdditionPage> {
               context,
               FadeRoute(
                   builder: (context) => AdditionDetailPage(
-                        term: widget.term.cntTerms[index],
+                        term: widget.term.cntTerms![index],
                       )));
         },
         child: Stack(
@@ -99,11 +98,11 @@ class _AdditionPageState extends State<AdditionPage> {
                   child: Image.asset("assets/images/logo_large.png"),
                 ),
                 Text(
-                  widget.term.cntTerms[index].name,
+                  widget.term.cntTerms![index].name,
                   style: TextStyle(fontSize: 50),
                 ),
                 Text(
-                  widget.term.cntTerms[index].slug,
+                  widget.term.cntTerms![index].slug,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 14),
                 )
@@ -136,7 +135,7 @@ class _AdditionPageState extends State<AdditionPage> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       decoration: BoxDecoration(
-          border: Border.all(width: 1, color: Colors.grey[300]),
+          border: Border.all(width: 1, color: Colors.grey[300]!),
           borderRadius: BorderRadius.all(Radius.circular(10))),
       child: RawMaterialButton(
         onPressed: () {
@@ -144,7 +143,7 @@ class _AdditionPageState extends State<AdditionPage> {
               context,
               FadeRoute(
                   builder: (context) => AboutDetailPage(
-                        term: widget.term.cntTerms[index],
+                        term: widget.term.cntTerms![index],
                       )));
         },
         child: Stack(
@@ -157,13 +156,13 @@ class _AdditionPageState extends State<AdditionPage> {
                   child: Image.asset("assets/images/logo_large.png"),
                 ),
                 Text(
-                  widget.term.cntTerms[index].name,
+                  widget.term.cntTerms![index].name,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 18),
                 ),
                 SizedBox(height: 5),
                 Text(
-                  widget.term.cntTerms[index].slug,
+                  widget.term.cntTerms![index].slug,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 20),
                 )

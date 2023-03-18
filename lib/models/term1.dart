@@ -1,8 +1,8 @@
 class TermOnlyModel {
-  final int id;
-  final String name;
-  final String slug;
-  final List<dynamic> cntTerms;
+  final int? id;
+  final String? name;
+  final String? slug;
+  final List<dynamic>? cntTerms;
 
   const TermOnlyModel({this.id, this.name, this.slug, this.cntTerms});
 

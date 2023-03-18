@@ -1,7 +1,7 @@
 class HistoryModel {
-  int id;
-  String name;
-  String slug;
+  int? id;
+  String? name;
+  String? slug;
   var medias;
 
   HistoryModel.fromJson(Map jsonMap) {

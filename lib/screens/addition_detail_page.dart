@@ -8,7 +8,7 @@ import 'package:law_app/utils/colorlaw.dart';
 class AdditionDetailPage extends StatefulWidget {
   final TermOnlyModel term;
 
-  AdditionDetailPage({Key key, this.term});
+  AdditionDetailPage({required this.term});
 
   _AdditionDetailPageState createState() => _AdditionDetailPageState();
 }
@@ -16,7 +16,7 @@ class AdditionDetailPage extends StatefulWidget {
 class _AdditionDetailPageState extends State<AdditionDetailPage> {
   static const int PAGE_SIZE = 10;
   // List<TermModel> publishedTerms = [];
-  TermTaxonomyModel publishedTerms;
+  TermTaxonomyModel? publishedTerms;
   bool isLoad = false;
 
   @override
@@ -26,7 +26,6 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
     BackendService.getTermTaxonomyById(widget.term.id).then((terms) {
       setState(() {
         this.publishedTerms = terms;
-        print(publishedTerms.cntTerms.length);
         isLoad = true;
       });
     });
@@ -49,7 +48,7 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          (widget.term?.name ?? "") + " оны " + widget.term?.slug ?? "",
+          "${(widget.term.name ?? "")} оны " + widget.term.slug!,
           style: TextStyle(
               color: Color(0xff1b4392),
               fontSize: 20,
@@ -60,12 +59,12 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
           ? Container(
               child: ListView(
                 padding: EdgeInsets.only(top: 10, left: 15, right: 15),
-                children:
-                    List.generate(publishedTerms?.cntTerms?.length, (index) {
-                  TermTaxonomyModel model = publishedTerms.cntTerms[index];
+                children: List.generate((publishedTerms?.cntTerms?.length ?? 0),
+                    (index) {
+                  TermTaxonomyModel model = publishedTerms?.cntTerms![index];
                   TaxonomyModel taxonomyModel;
-                  if (model.taxonomies != null && model.taxonomies.length > 0)
-                    taxonomyModel = model.taxonomies[0];
+                  if (model.taxonomies != null && model.taxonomies!.length > 0)
+                    taxonomyModel = model.taxonomies![0];
 
                   return Container(
                     margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -77,7 +76,7 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
                           Row(
                             children: <Widget>[
                               Text(
-                                publishedTerms.cntTerms[index].slug,
+                                "${publishedTerms?.cntTerms![index].slug}",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.w700),
@@ -107,7 +106,7 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
                             height: 10,
                           ),
                           Text(
-                            taxonomyModel?.description ?? "",
+                            "{taxonomyModel.description ?? " "}",
                             textAlign: TextAlign.justify,
                             style: TextStyle(fontSize: 18),
                           ),

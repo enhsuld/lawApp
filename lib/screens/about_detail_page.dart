@@ -11,7 +11,7 @@ import 'package:law_app/utils/fade_route.dart';
 class AboutDetailPage extends StatefulWidget {
   final TermOnlyModel term;
 
-  AboutDetailPage({Key key, this.term});
+  AboutDetailPage({required this.term});
 
   _AboutDetailPageState createState() => _AboutDetailPageState();
 }
@@ -20,7 +20,7 @@ class _AboutDetailPageState extends State<AboutDetailPage> {
   static const int PAGE_SIZE = 10;
   // List<TermModel> publishedTerms = [];
   List<TermModel> publishedTerms = [];
-  TermChildModel term;
+  TermChildModel? term;
   bool verticalGallery = false;
   bool isLoad = false;
 
@@ -52,7 +52,7 @@ class _AboutDetailPageState extends State<AboutDetailPage> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          widget.term.name + " оны " + widget.term.slug,
+          "${widget.term.name} оны ${widget.term.slug}",
           style: TextStyle(
               color: Color(0xff1b4392),
               fontSize: 20,
@@ -66,7 +66,7 @@ class _AboutDetailPageState extends State<AboutDetailPage> {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      term.cntTerms[0].slug,
+                      "${term?.cntTerms?[0].slug}",
                       textAlign: TextAlign.justify,
                       style: TextStyle(fontSize: 18),
                     ),
@@ -74,9 +74,9 @@ class _AboutDetailPageState extends State<AboutDetailPage> {
                       height: 250,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
-                        children: List.generate(term.cntTerms[0].medias.length,
-                            (index) {
-                          TermChildModel _term = term.cntTerms[0];
+                        children: List.generate(
+                            term?.cntTerms![0].medias.length, (index) {
+                          TermChildModel _term = term?.cntTerms![0];
                           return Card(
                             //height: 250,
                             color: ColorLaw.blue,
@@ -84,7 +84,7 @@ class _AboutDetailPageState extends State<AboutDetailPage> {
                             margin: EdgeInsets.all(10),
                             child: RawMaterialButton(
                               onPressed: () {
-                                open(context, index, _term.medias);
+                                open(context, index, _term.medias ?? []);
                               },
                               child:
                                   // FadeInImage.assetNetwork(
@@ -97,8 +97,8 @@ class _AboutDetailPageState extends State<AboutDetailPage> {
                                   Center(
                                 child: CachedNetworkImage(
                                   fit: BoxFit.cover,
-                                  imageUrl:
-                                      BackendService.link + _term.medias[index],
+                                  imageUrl: BackendService.link +
+                                      "${_term.medias![index]}",
                                   placeholder: (context, url) =>
                                       CircularProgressIndicator(),
                                   errorWidget: (context, url, error) =>

@@ -4,13 +4,13 @@ import 'package:law_app/utils/colorlaw.dart';
 
 class OrshilPage extends StatefulWidget {
   final TermOnlyModel term;
-  OrshilPage({this.term});
+  OrshilPage({required this.term});
   _OrshilPageState createState() => _OrshilPageState();
 }
 
 class _OrshilPageState extends State<OrshilPage> {
   static const int PAGE_SIZE = 20;
-  List<TermOnlyModel> terms = new List();
+  List<TermOnlyModel> terms = [];
 
   @override
   void initState() {
@@ -48,8 +48,8 @@ class _OrshilPageState extends State<OrshilPage> {
       ),
       body: ListView(
         padding: EdgeInsets.only(top: 20, left: 15, right: 15),
-        children: List.generate(widget.term.cntTerms.length, (index) {
-          TermOnlyModel model = widget.term.cntTerms[index];
+        children: List.generate(widget.term.cntTerms!.length, (index) {
+          TermOnlyModel model = widget.term.cntTerms![index];
           return Center(
             child: Column(
               children: <Widget>[
@@ -61,7 +61,7 @@ class _OrshilPageState extends State<OrshilPage> {
                       )
                     : Container(),
                 Text(
-                  model.name,
+                  "${model.name}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 18,

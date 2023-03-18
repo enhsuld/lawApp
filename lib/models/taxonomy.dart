@@ -1,9 +1,9 @@
 class TaxonomyModel {
-  final int id;
-  final String taxonomy;
-  final String description;
-  final int parentId;
-  final int termId;
+  final int? id;
+  final String? taxonomy;
+  final String? description;
+  final int? parentId;
+  final int? termId;
   // final List<dynamic> cntTerms;
 
   const TaxonomyModel(

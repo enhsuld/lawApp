@@ -17,12 +17,11 @@ class TaxonomyItem extends StatefulWidget {
 }
 
 class _TermItemState extends State<TaxonomyItem> {
-
-  TextStyle style = TextStyle(fontFamily: 'Roboto', color: Colors.white, fontSize: 15.0);
+  TextStyle style =
+      TextStyle(fontFamily: 'Roboto', color: Colors.white, fontSize: 15.0);
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       padding: EdgeInsets.only(bottom: 10),
       child: Material(
@@ -37,7 +36,7 @@ class _TermItemState extends State<TaxonomyItem> {
           },
           child: Row(
             children: <Widget>[
-              Text(widget.model.taxonomy,
+              Text(widget.model.taxonomy ?? "",
                   textAlign: TextAlign.center,
                   style: style.copyWith(color: Color(0xff1b4392), fontSize: 15))
             ],

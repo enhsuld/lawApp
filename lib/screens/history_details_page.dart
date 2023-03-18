@@ -10,7 +10,7 @@ import 'package:law_app/utils/timeline_entry_row.dart';
 
 class HistoryDetailsPage extends StatefulWidget {
   final int term;
-  HistoryDetailsPage({this.term});
+  HistoryDetailsPage({required this.term});
   _HistoryDetailsPageState createState() => _HistoryDetailsPageState();
 }
 

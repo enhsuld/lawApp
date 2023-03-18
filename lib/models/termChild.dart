@@ -1,10 +1,10 @@
 class TermChildModel {
-  final int id;
-  final String name;
-  final String slug;
-  final List<dynamic> medias;
+  final int? id;
+  final String? name;
+  final String? slug;
+  final List<dynamic>? medias;
   final dynamic meta;
-  final List<dynamic> cntTerms;
+  final List<dynamic>? cntTerms;
 
   const TermChildModel(
       {this.id, this.name, this.slug, this.cntTerms, this.medias, this.meta});

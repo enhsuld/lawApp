@@ -8,21 +8,20 @@ import 'package:law_app/screens/history_details_page.dart';
 import 'package:law_app/services/BackendService.dart';
 import 'package:law_app/utils/colorlaw.dart';
 import 'package:law_app/utils/fade_route.dart';
-import 'package:network_to_file_image/network_to_file_image.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:path/path.dart' as p;
 
 class HistoryPage extends StatefulWidget {
   final TermOnlyModel term;
-  HistoryPage({this.term});
+  HistoryPage({required this.term});
   _HistoryPageState createState() => _HistoryPageState();
 }
 
 class _HistoryPageState extends State<HistoryPage> {
   static const int PAGE_SIZE = 10;
 
-  List<HistoryModel> historys = List();
-  File file;
+  List<HistoryModel> historys = [];
+  File? file;
 
   @override
   void initState() {
@@ -94,7 +93,7 @@ class _HistoryPageState extends State<HistoryPage> {
             context,
             FadeRoute(
                 builder: (context) => HistoryDetailsPage(
-                      term: entry.id,
+                      term: entry.id!,
                     )));
       },
       child: Container(
@@ -116,27 +115,27 @@ class _HistoryPageState extends State<HistoryPage> {
             //   ),
             // ),
             Center(
-              child:
-                  // CachedNetworkImage(
-                  //   fit: BoxFit.cover,
-                  //   width: double.infinity,
-                  //   imageUrl: ((entry?.medias ?? []).length > 0)
-                  //       ? BackendService.link + entry.medias[0]
-                  //       : "",
-                  //   placeholder: (context, url) => CircularProgressIndicator(),
-                  //   errorWidget: (context, url, error) =>
-                  //       Image.asset("assets/images/no_image.png"),
-                  // ),
-                  Image(
-                width: double.infinity,
+              child: CachedNetworkImage(
                 fit: BoxFit.cover,
-                image: NetworkToFileImage(
-                    url: ((entry?.medias ?? []).length > 0)
-                        ? BackendService.link + entry.medias[0]
-                        : "",
-                    file: getFile("hostory-$_.jpg"),
-                    debug: true),
+                width: double.infinity,
+                imageUrl: ((entry?.medias ?? []).length > 0)
+                    ? BackendService.link + entry.medias[0]
+                    : "",
+                placeholder: (context, url) =>
+                    Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) =>
+                    Image.asset("assets/images/no_image.png"),
               ),
+              //     Image(
+              //   width: double.infinity,
+              //   fit: BoxFit.cover,
+              //   image: NetworkToFileImage(
+              //       url: ((entry?.medias ?? []).length > 0)
+              //           ? BackendService.link + entry.medias[0]
+              //           : "",
+              //       file: getFile("hostory-$_.jpg"),
+              //       debug: true),
+              // ),
             ),
             //Image.network("src"),
             Align(
@@ -155,7 +154,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     //     topRight: Radius.circular(8)),
                     ),
                 child: Text(
-                  entry.name,
+                  entry.name!,
                   textAlign: TextAlign.left,
                   softWrap: true,
                   style: TextStyle(

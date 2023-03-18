@@ -1,7 +1,7 @@
 class ContentModel {
-  int id;
-  String title;
-  String slug;
+  int? id;
+  String? title;
+  String? slug;
 
   ContentModel.fromJson(Map jsonMap) {
     this.id = jsonMap['id'];

@@ -6,8 +6,8 @@ import 'package:meta/meta.dart';
 
 class LinePainter extends CustomPainter {
   LinePainter(
-      {@required this.lineColor,
-      @required this.backgroundColor,
+      {required this.lineColor,
+      required this.backgroundColor,
       this.ending = false})
       : super();
 
@@ -73,10 +73,10 @@ class TimelineEntryRow extends StatelessWidget {
   final TaxonomyModel entry;
 
   TimelineEntryRow(
-      {@required this.lineColor,
-      @required this.backgroundColor,
-      @required this.imagesBaseUrl,
-      @required this.entry});
+      {required this.lineColor,
+      required this.backgroundColor,
+      required this.imagesBaseUrl,
+      required this.entry});
 
   Widget _buildTimeColumn(BuildContext context) {
     return new Container(

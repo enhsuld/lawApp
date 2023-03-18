@@ -28,14 +28,14 @@ class TermVerticalItem extends StatelessWidget {
     //   ),
     // };
     return new ExpansionTile(
-      key: PageStorageKey<int>(model.id),
+      key: PageStorageKey<int>(model.id ?? 0),
       initiallyExpanded: (search != null && search.length > 0) ? true : false,
       title: new Text(
         (t?.slug ?? "").toUpperCase(),
         style: TextStyle(
             color: ColorLaw.blue, fontSize: 18, fontWeight: FontWeight.w500),
       ),
-      children: t.cntTermTaxonomies
+      children: (t.cntTermTaxonomies ?? [])
           .map((data) => Container(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 child: Row(

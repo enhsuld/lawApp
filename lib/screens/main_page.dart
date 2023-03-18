@@ -1,9 +1,5 @@
-import 'dart:async';
-import 'dart:io';
-
-import 'package:connectivity/connectivity.dart';
+import 'package:app_version_update/app_version_update.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:law_app/items/TermItem.dart';
 import 'package:law_app/models/term1.dart';
 import 'package:law_app/services/BackendService.dart';
@@ -16,11 +12,8 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   static const int PAGE_SIZE = 10;
-  String _connectionStatus = 'Unknown';
-  final Connectivity _connectivity = Connectivity();
-  StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
-  var publishedTerms = new List<TermOnlyModel>();
+  var publishedTerms = <TermOnlyModel>[];
   _read() async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'isMenu';
@@ -51,32 +44,44 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  void _verifyVersion() async {
+    try {
+      await AppVersionUpdate.checkForUpdates(
+              appleId: '1507881332',
+              playStoreId: 'mn.law.constitution',
+              country: 'mn')
+          .then((data) async {
+        print(data);
+        if (data.canUpdate!) {
+          // await AppVersionUpdate.showBottomSheetUpdate(context: context, appVersionResult: appVersionResult)
+          // await AppVersionUpdate.showPageUpdate(context: context, appVersionResult: appVersionResult)
+          await AppVersionUpdate.showAlertUpdate(
+            appVersionResult: data,
+            context: context,
+            backgroundColor: Colors.grey[200],
+            title: 'Мэдэгдэл',
+            content: 'Шинэ хувилбар гарсан байна. Шинэчлэнэ үү',
+            updateButtonText: 'Татах',
+            cancelButtonText: 'Үгүй',
+            titleTextStyle: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+                fontSize: 24.0),
+            contentTextStyle: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w400,
+            ),
+          );
+        }
+      });
+    } catch (e) {}
+  }
+
   @override
   void initState() {
     super.initState();
-    initConnectivity();
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     _read();
-  }
-
-  Future<void> initConnectivity() async {
-    ConnectivityResult result;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      result = await _connectivity.checkConnectivity();
-    } on PlatformException catch (e) {
-      print(e.toString());
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) {
-      return Future.value(null);
-    }
-
-    return _updateConnectionStatus(result);
+    _verifyVersion();
   }
 
   @override
@@ -149,28 +154,8 @@ class _MainPageState extends State<MainPage> {
         ));
   }
 
-  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
-    switch (result) {
-      case ConnectivityResult.wifi:
-        setState(() {
-          _connectionStatus = "Wifi";
-        });
-        break;
-      case ConnectivityResult.mobile:
-        setState(() => _connectionStatus = result.toString());
-        break;
-      case ConnectivityResult.none:
-        setState(() => _connectionStatus = "false");
-        break;
-      default:
-        setState(() => _connectionStatus = 'false');
-        break;
-    }
-  }
-
   @override
   void dispose() {
-    _connectivitySubscription.cancel();
     super.dispose();
   }
 }

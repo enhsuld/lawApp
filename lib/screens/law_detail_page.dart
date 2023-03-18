@@ -10,7 +10,7 @@ import 'package:law_app/utils/material_search.dart';
 class LawDetailPage extends StatefulWidget {
   final TermOnlyModel term;
 
-  LawDetailPage({Key key, this.term});
+  LawDetailPage({required this.term});
 
   _LawDetailPageState createState() => _LawDetailPageState();
 }
@@ -20,8 +20,8 @@ class _LawDetailPageState extends State<LawDetailPage> {
   List<String> _views = [];
 
   static const int PAGE_SIZE = 10;
-  List<TermLawModel> publishedTerms = new List();
-  List<TaxonomyModel> publishedTaxonomy = new List();
+  List<TermLawModel> publishedTerms = [];
+  List<TaxonomyModel> publishedTaxonomy = [];
 
   @override
   void initState() {
@@ -56,9 +56,10 @@ class _LawDetailPageState extends State<LawDetailPage> {
           return new Material(
             child: new MaterialSearch<String>(
               placeholder: 'Хайх',
+              leading: SizedBox(),
               results: _names
                   .map((String v) => new MaterialSearchResult<String>(
-                        //icon: Icons.person,
+                        icon: Icons.person,
                         value: v,
                         text: "$v",
                       ))
@@ -182,7 +183,7 @@ class _LawDetailPageState extends State<LawDetailPage> {
                               )),
                               child: Center(
                                 child: Text(
-                                  view.slug.toUpperCase(),
+                                  "${view.slug}".toUpperCase(),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 19,
@@ -200,10 +201,10 @@ class _LawDetailPageState extends State<LawDetailPage> {
                         SliverList(
                           delegate: new SliverChildBuilderDelegate(
                             (BuildContext context, int index) {
-                              final item = view.cntTerms[index];
+                              final item = view.cntTerms![index];
                               return new TermVerticalItem(item, index, search);
                             },
-                            childCount: view.cntTerms.length,
+                            childCount: view.cntTerms?.length,
                           ),
                         ),
                       ])),
