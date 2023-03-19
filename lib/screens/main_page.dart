@@ -60,7 +60,8 @@ class _MainPageState extends State<MainPage> {
             context: context,
             backgroundColor: Colors.grey[200],
             title: 'Мэдэгдэл',
-            content: 'Шинэ хувилбар гарсан байна. Шинэчлэнэ үү',
+            mandatory: true,
+            content: 'Шинэ хувилбар гарсан байна. Шинэчилнэ үү',
             updateButtonText: 'Татах',
             cancelButtonText: 'Үгүй',
             titleTextStyle: const TextStyle(
