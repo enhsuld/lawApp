@@ -16,7 +16,6 @@ dependencies:
   shared_preferences: ^2.0.18
   photo_view: ^0.14.0
   cached_network_image: ^3.2.3
-  # network_to_file_image: ^4.0.1
   path_provider: ^2.0.13
   app_version_update: ^3.1.0
 
