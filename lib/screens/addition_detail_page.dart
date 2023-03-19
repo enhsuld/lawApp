@@ -62,7 +62,7 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
                 children: List.generate((publishedTerms?.cntTerms?.length ?? 0),
                     (index) {
                   TermTaxonomyModel model = publishedTerms?.cntTerms![index];
-                  TaxonomyModel taxonomyModel;
+                  TaxonomyModel? taxonomyModel;
                   if (model.taxonomies != null && model.taxonomies!.length > 0)
                     taxonomyModel = model.taxonomies![0];
 
@@ -106,7 +106,7 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
                             height: 10,
                           ),
                           Text(
-                            "{taxonomyModel.description ?? " "}",
+                            "${taxonomyModel?.description ?? ""}",
                             textAlign: TextAlign.justify,
                             style: TextStyle(fontSize: 18),
                           ),
