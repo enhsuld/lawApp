@@ -31,7 +31,7 @@ class TermTaxonomyModel {
             .map((i) => TaxonomyModel.fromJson(i))
             .toList();
 
-  static List<TermTaxonomyModel> fromJsonList({jsonList, dataKey: ""}) {
+  static List<TermTaxonomyModel> fromJsonList({jsonList, String dataKey = ""}) {
     if (dataKey != "") jsonList = jsonList[dataKey];
     return jsonList
         .map<TermTaxonomyModel>((obj) => TermTaxonomyModel.fromJson(obj))

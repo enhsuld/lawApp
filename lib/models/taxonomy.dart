@@ -20,7 +20,7 @@ class TaxonomyModel {
 
   //TermModel.fromJson(Map jsonMap) : id=jsonMap['id'],name = jsonMap['name'],slug = jsonMap['slug'],parentId = jsonMap['parentId'],cntTerms=(jsonMap['cntTerms']).map((i) => TermModel.fromJson(i)).toList();
 
-  static List<TaxonomyModel> fromJsonList(jsonList, {dataKey: ""}) {
+  static List<TaxonomyModel> fromJsonList(jsonList, {String dataKey = ""}) {
     if (dataKey != "") jsonList = jsonList[dataKey];
     return jsonList
         .map<TaxonomyModel>((obj) => TaxonomyModel.fromJson(obj))

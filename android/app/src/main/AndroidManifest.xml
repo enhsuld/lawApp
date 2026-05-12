@@ -5,7 +5,8 @@
     <application
         android:name="${applicationName}"
         android:label="Монгол Улсын Үндсэн хууль"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/launcher_icon"
+        android:extractNativeLibs="false">
         <activity
             android:name=".MainActivity"
             android:exported="true"

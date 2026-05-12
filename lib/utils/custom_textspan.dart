@@ -100,7 +100,7 @@ TextSpan searchMatch(String match, search) {
 //           TextStyle(color: Colors.white, backgroundColor: ColorLaw.blue),
 //       negRes = TextStyle(color: Colors.black, backgroundColor: Colors.white);
 
-//   TextSpan searchMatch({String match: "", String search}) {
+//   TextSpan searchMatch({String match = "", String? search}) {
 //     if (search == null || search == "")
 //       return TextSpan(text: match, style: negRes);
 //     var refinedMatch = match.toLowerCase();

@@ -9,7 +9,7 @@ class ContentModel {
     this.slug = jsonMap['slug'];
   }
 
-  static List<ContentModel> fromJsonList({jsonList, dataKey: ""}) {
+  static List<ContentModel> fromJsonList({jsonList, String dataKey = ""}) {
     if (dataKey != "") jsonList = jsonList[dataKey];
     return jsonList
         .map<ContentModel>((obj) => ContentModel.fromJson(obj))

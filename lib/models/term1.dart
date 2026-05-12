@@ -14,7 +14,7 @@ class TermOnlyModel {
             .map((i) => TermOnlyModel.fromJson(i))
             .toList();
 
-  static List<TermOnlyModel> fromJsonList({jsonList, dataKey: ""}) {
+  static List<TermOnlyModel> fromJsonList({jsonList, String dataKey = ""}) {
     if (dataKey != "") jsonList = jsonList[dataKey];
     return jsonList
         .map<TermOnlyModel>((obj) => TermOnlyModel.fromJson(obj))

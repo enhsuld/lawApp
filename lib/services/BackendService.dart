@@ -16,7 +16,7 @@ class BackendService {
   static String apiURL = url + "/cnt";
 
   static Future<List<TermModel>> getContent(offset, limit,
-      {publish: '', filters: ''}) async {
+      {String publish = '', String filters = ''}) async {
     final response = (await http.get(Uri.parse(apiURL + '/term/term/all')));
     print(response.statusCode);
     print(json.decode(response.body));
@@ -73,7 +73,7 @@ class BackendService {
     return TermTaxonomyModel.fromJson(json.decode(response.body));
   }
 
-  static Future<List<TermLawModel>> getLawSearch({keyword: ""}) async {
+  static Future<List<TermLawModel>> getLawSearch({String keyword = ""}) async {
     final response =
         (await http.get(Uri.parse(apiURL + '/term/search$keyword')));
     print(response.statusCode);

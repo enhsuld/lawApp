@@ -19,7 +19,7 @@ class TermChildModel {
             .map((i) => TermChildModel.fromJson(i))
             .toList();
 
-  static List<TermChildModel> fromJsonList({jsonList, dataKey: ""}) {
+  static List<TermChildModel> fromJsonList({jsonList, String dataKey = ""}) {
     if (dataKey != "") jsonList = jsonList[dataKey];
     return jsonList
         .map<TermChildModel>((obj) => TermChildModel.fromJson(obj))

@@ -11,7 +11,7 @@ class HistoryModel {
     this.slug = jsonMap['slug'];
   }
 
-  static List<HistoryModel> fromJsonList({jsonList, dataKey: ""}) {
+  static List<HistoryModel> fromJsonList({jsonList, String dataKey = ""}) {
     if (dataKey != "") jsonList = jsonList[dataKey];
     return jsonList
         .map<HistoryModel>((obj) => HistoryModel.fromJson(obj))

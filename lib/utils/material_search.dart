@@ -221,9 +221,9 @@ class _MaterialSearchState<T> extends State<MaterialSearch> {
 class _MaterialSearchPageRoute<T> extends MaterialPageRoute<T> {
   _MaterialSearchPageRoute({
     required WidgetBuilder builder,
-    RouteSettings settings: const RouteSettings(),
-    maintainState: true,
-    bool fullscreenDialog: false,
+    RouteSettings settings = const RouteSettings(),
+    bool maintainState = true,
+    bool fullscreenDialog = false,
   })  : assert(builder != null),
         super(
             builder: builder,
