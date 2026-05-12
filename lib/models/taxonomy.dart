@@ -13,8 +13,8 @@ class TaxonomyModel {
 
   TaxonomyModel.fromJson(Map jsonMap)
       : id = jsonMap['id'],
-        taxonomy = jsonMap['taxonomy'],
-        description = jsonMap['description'],
+        taxonomy = jsonMap['taxonomy']?.toString().trim(),
+        description = jsonMap['description']?.toString().trim(),
         parentId = jsonMap['parentId'],
         termId = jsonMap['termId'];
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_share/flutter_share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:law_app/models/term1.dart';
 import 'package:law_app/screens/about_page.dart';
 import 'package:law_app/screens/addition_page.dart';
@@ -36,11 +36,9 @@ class _TermItemState extends State<TermItem> {
           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           onPressed: () {
             if (widget.model.slug == "6") {
-              FlutterShare.share(
-                  title: 'Монгол Улсын Үндсэн хууль',
-                  text: 'Монгол Улсын Үндсэн хууль',
-                  linkUrl: 'https://onelink.to/conslaw',
-                  chooserTitle: 'Түгээх боломжтой');
+              Share.share(
+                  'Монгол Улсын Үндсэн хууль\nhttps://onelink.to/conslaw',
+                  subject: 'Монгол Улсын Үндсэн хууль');
             } else if (widget.model.slug == "4") {
               print(widget.model);
               Navigator.of(context).push(FadeRoute(

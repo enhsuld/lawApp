@@ -1,10 +1,5 @@
-import 'dart:collection';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:law_app/models/taxonomy.dart';
-import 'package:law_app/models/term.dart';
-import 'package:law_app/screens/law_detail_page.dart';
-import 'package:law_app/utils/fade_route.dart';
 
 class TaxonomyItem extends StatefulWidget {
   final TaxonomyModel model;

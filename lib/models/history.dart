@@ -6,9 +6,9 @@ class HistoryModel {
 
   HistoryModel.fromJson(Map jsonMap) {
     this.id = jsonMap['id'];
-    this.name = jsonMap['name'];
+    this.name = jsonMap['name']?.toString().trim();
     this.medias = jsonMap['medias'];
-    this.slug = jsonMap['slug'];
+    this.slug = jsonMap['slug']?.toString().trim();
   }
 
   static List<HistoryModel> fromJsonList({jsonList, String dataKey = ""}) {

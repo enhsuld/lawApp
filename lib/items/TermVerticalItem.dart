@@ -17,8 +17,8 @@ class TermVerticalItem extends StatelessWidget {
     return _buildTiles(model);
   }
 
-  TextStyle textStyle =
-      new TextStyle(color: Colors.white, backgroundColor: ColorLaw.blue);
+  final TextStyle textStyle =
+      const TextStyle(color: Colors.white, backgroundColor: ColorLaw.blue);
 
   Widget _buildTiles(TermLawModel t) {
     // words = {
@@ -29,9 +29,9 @@ class TermVerticalItem extends StatelessWidget {
     // };
     return new ExpansionTile(
       key: PageStorageKey<int>(model.id ?? 0),
-      initiallyExpanded: (search != null && search.length > 0) ? true : false,
+      initiallyExpanded: search.isNotEmpty,
       title: new Text(
-        (t?.slug ?? "").toUpperCase(),
+        (t.slug ?? "").toUpperCase(),
         style: TextStyle(
             color: ColorLaw.blue, fontSize: 18, fontWeight: FontWeight.w500),
       ),
