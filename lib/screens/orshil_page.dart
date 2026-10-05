@@ -121,33 +121,33 @@ class _OrshilPageState extends State<OrshilPage> {
                         );
                       }
 
-                      if (isLast) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 14, bottom: 8),
-                          child: Container(
-                            padding: const EdgeInsets.all(14),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFEFF6FF),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: const Color(0xFFBFDBFE),
-                                width: 1,
-                              ),
-                            ),
-                            child: Text(
-                              text,
-                              textAlign: TextAlign.justify,
-                              style: const TextStyle(
-                                fontSize: 15.5,
-                                fontWeight: FontWeight.w700,
-                                fontFamily: "Fregat",
-                                color: Color(0xFF1E3A8A),
-                                height: 1.5,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
+                      // if (isLast) {
+                      //   return Padding(
+                      //     padding: const EdgeInsets.only(top: 14, bottom: 8),
+                      //     child: Container(
+                      //       padding: const EdgeInsets.all(14),
+                      //       decoration: BoxDecoration(
+                      //         color: const Color(0xFFEFF6FF),
+                      //         borderRadius: BorderRadius.circular(12),
+                      //         border: Border.all(
+                      //           color: const Color(0xFFBFDBFE),
+                      //           width: 1,
+                      //         ),
+                      //       ),
+                      //       child: Text(
+                      //         text,
+                      //         textAlign: TextAlign.justify,
+                      //         style: const TextStyle(
+                      //           fontSize: 15.5,
+                      //           fontWeight: FontWeight.w700,
+                      //           fontFamily: "Fregat",
+                      //           color: Color(0xFF1E3A8A),
+                      //           height: 1.5,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   );
+                      // }
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6),
@@ -165,7 +165,9 @@ class _OrshilPageState extends State<OrshilPage> {
                             ),
                             Expanded(
                               child: Text(
-                                text.startsWith("-") ? text.substring(1).trim() : text,
+                                text.startsWith("-")
+                                    ? text.substring(1).trim()
+                                    : text,
                                 textAlign: TextAlign.justify,
                                 style: const TextStyle(
                                   fontSize: 15.5,
