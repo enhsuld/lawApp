@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:law_app/models/taxonomy.dart';
 import 'package:law_app/models/term1.dart';
 import 'package:law_app/models/termTaxonomy.dart';
@@ -37,13 +38,64 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
   }
 
   String _cleanArticleNumber(TermTaxonomyModel item) {
-    final raw = (item.slug ?? item.name ?? '').trim();
-    return raw.replaceAll(RegExp(r'^(2019|2000)\.'), '');
+    // Check name first for accuracy (e.g. 2019.57.3 vs typo slug 2019.57.2)
+    final raw = (item.name != null && item.name!.isNotEmpty)
+        ? item.name!
+        : (item.slug ?? '').trim();
+    return raw.replaceAll(RegExp(r'^(2019|2000)\.'), '').trim();
   }
 
-  Widget _buildTaxonomyContent(TermTaxonomyModel model) {
+  static List<int> _extractNumberParts(TermTaxonomyModel item) {
+    final raw = (item.name != null && item.name!.isNotEmpty)
+        ? item.name!
+        : (item.slug ?? '').trim();
+    final clean = raw.replaceAll(RegExp(r'^(2019|2000)\.'), '').trim();
+    final matches = RegExp(r'\d+').allMatches(clean);
+    return matches.map((m) => int.tryParse(m.group(0) ?? '') ?? 0).toList();
+  }
+
+  static int _compareItems(TermTaxonomyModel a, TermTaxonomyModel b) {
+    final aNums = _extractNumberParts(a);
+    final bNums = _extractNumberParts(b);
+    final minLen = aNums.length < bNums.length ? aNums.length : bNums.length;
+    for (int i = 0; i < minLen; i++) {
+      if (aNums[i] != bNums[i]) {
+        return aNums[i].compareTo(bNums[i]);
+      }
+    }
+    if (aNums.length != bNums.length) {
+      return aNums.length.compareTo(bNums.length);
+    }
+    final aStr = a.name ?? a.slug ?? '';
+    final bStr = b.name ?? b.slug ?? '';
+    return aStr.compareTo(bStr);
+  }
+
+  void _copyText(BuildContext context, String text, String label) {
+    Clipboard.setData(ClipboardData(text: text.trim()));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.check_circle, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              '$label хуулагдлаа',
+              style: const TextStyle(fontFamily: 'Fregat'),
+            ),
+          ],
+        ),
+        backgroundColor: ColorLaw.blue,
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+    );
+  }
+
+  Widget _buildTaxonomyContent(TermTaxonomyModel model, String articleNumber) {
     if (model.taxonomies != null && model.taxonomies!.isNotEmpty) {
-      return _buildTaxonomyText(model.taxonomies![0]);
+      return _buildTaxonomyText(model.taxonomies![0], articleNumber);
     }
 
     // Dynamic fallback fetch if taxonomy wasn't in the initial tree
@@ -51,8 +103,8 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
       future: BackendService.getTaxonomyById(model.id),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
             child: Center(
               child: SizedBox(
                 width: 20,
@@ -67,14 +119,14 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
         }
         final list = snapshot.data ?? [];
         if (list.isNotEmpty) {
-          return _buildTaxonomyText(list[0]);
+          return _buildTaxonomyText(list[0], articleNumber);
         }
         return const SizedBox();
       },
     );
   }
 
-  Widget _buildTaxonomyText(TaxonomyModel tax) {
+  Widget _buildTaxonomyText(TaxonomyModel tax, String articleNumber) {
     final title = (tax.taxonomy ?? '').trim();
     final description = (tax.description ?? '').trim();
 
@@ -84,22 +136,30 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
         if (title.isNotEmpty) ...[
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w700,
+              fontFamily: 'Fregat',
               color: ColorLaw.blue,
             ),
           ),
           const SizedBox(height: 6),
         ],
         if (description.isNotEmpty)
-          Text(
-            description,
-            textAlign: TextAlign.justify,
-            style: const TextStyle(
-              fontSize: 16,
-              height: 1.45,
-              color: Colors.black87,
+          InkWell(
+            onLongPress: () {
+              _copyText(context, "$articleNumber $description", "Зүйл, заалт");
+            },
+            borderRadius: BorderRadius.circular(6),
+            child: Text(
+              description,
+              textAlign: TextAlign.justify,
+              style: const TextStyle(
+                fontSize: 16,
+                height: 1.5,
+                fontFamily: 'Fregat',
+                color: Colors.black87,
+              ),
             ),
           ),
       ],
@@ -108,44 +168,55 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final termsList = publishedTerms?.cntTerms ?? [];
+    final List<TermTaxonomyModel> termsList = (publishedTerms?.cntTerms ?? [])
+        .whereType<TermTaxonomyModel>()
+        .toList();
+    // Sort in ascending numerical order of the constitutional articles (6.2, 19.1, 19.2, ...)
+    termsList.sort(_compareItems);
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: ColorLaw.blue,
           ),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
+        elevation: 0.5,
         title: Text(
           "${widget.term.name ?? ""} оны ${widget.term.slug ?? ""}",
-          style: TextStyle(
+          style: const TextStyle(
             color: ColorLaw.blue,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            fontFamily: "Fregat",
           ),
         ),
       ),
       body: !isLoad
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(color: ColorLaw.blue),
             )
           : termsList.isEmpty
               ? const Center(
                   child: Text(
                     "Мэдээлэл олдсонгүй",
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                      fontFamily: "Fregat",
+                    ),
                   ),
                 )
               : ListView.builder(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 12),
+                      horizontal: 14, vertical: 12),
                   itemCount: termsList.length,
                   itemBuilder: (context, index) {
                     final TermTaxonomyModel item = termsList[index];
@@ -153,45 +224,84 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
 
                     return Container(
                       margin: const EdgeInsets.only(bottom: 12),
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.02),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(
-                                articleNumber,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  color: ColorLaw.blue,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 3),
-                                decoration: BoxDecoration(
-                                  color: ColorLaw.blue,
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(6)),
-                                ),
-                                child: Text(
-                                  "ӨӨРЧЛӨН НАЙРУУЛСАН",
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
+                              Row(
+                                children: [
+                                  Text(
+                                    articleNumber,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: 'Fregat',
+                                      color: ColorLaw.blue,
+                                    ),
                                   ),
+                                  const SizedBox(width: 10),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 3),
+                                    decoration: BoxDecoration(
+                                      color: ColorLaw.blue,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(6)),
+                                    ),
+                                    child: const Text(
+                                      "ӨӨРЧЛӨН НАЙРУУЛСАН",
+                                      style: TextStyle(
+                                        fontSize: 10.5,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: 'Fregat',
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.copy_rounded,
+                                  size: 18,
+                                  color: ColorLaw.blue,
                                 ),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                tooltip: "Хуулах",
+                                onPressed: () {
+                                  final taxDesc =
+                                      (item.taxonomies != null &&
+                                              item.taxonomies!.isNotEmpty)
+                                          ? (item.taxonomies![0].description ??
+                                              '')
+                                          : '';
+                                  _copyText(
+                                    context,
+                                    '$articleNumber\n$taxDesc',
+                                    'Зүйл, заалт',
+                                  );
+                                },
                               ),
                             ],
                           ),
                           const SizedBox(height: 10),
-                          _buildTaxonomyContent(item),
-                          const SizedBox(height: 12),
-                          Divider(color: Colors.grey[300], thickness: 1),
+                          _buildTaxonomyContent(item, articleNumber),
                         ],
                       ),
                     );

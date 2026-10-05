@@ -172,6 +172,8 @@ class BackendService {
           }
         }
 
+        _sortAmendmentChildren(children);
+
         final encoded = json.encode(decoded);
         await prefs.setString(cacheKey, encoded);
         return TermTaxonomyModel.fromJson(decoded);
@@ -180,9 +182,93 @@ class BackendService {
 
     // 3. Fallback to cached or bundled asset
     if (localJson != null && localJson.isNotEmpty) {
-      return TermTaxonomyModel.fromJson(json.decode(localJson));
+      final decoded = json.decode(localJson);
+      if (decoded is Map) {
+        final children = decoded['child'] as List<dynamic>? ?? [];
+        _sortAmendmentChildren(children);
+        return TermTaxonomyModel.fromJson(decoded);
+      }
     }
     return null;
+  }
+
+  static void _sortAmendmentChildren(List<dynamic> children) {
+    children.sort((a, b) {
+      if (a is! Map || b is! Map) return 0;
+      final aRaw = (a['name'] != null && a['name'].toString().isNotEmpty)
+          ? a['name'].toString()
+          : (a['slug'] ?? '').toString();
+      final bRaw = (b['name'] != null && b['name'].toString().isNotEmpty)
+          ? b['name'].toString()
+          : (b['slug'] ?? '').toString();
+
+      final aClean = aRaw.replaceAll(RegExp(r'^(2019|2000)\.'), '').trim();
+      final bClean = bRaw.replaceAll(RegExp(r'^(2019|2000)\.'), '').trim();
+
+      final aNums = RegExp(r'\d+')
+          .allMatches(aClean)
+          .map((m) => int.tryParse(m.group(0) ?? '') ?? 0)
+          .toList();
+      final bNums = RegExp(r'\d+')
+          .allMatches(bClean)
+          .map((m) => int.tryParse(m.group(0) ?? '') ?? 0)
+          .toList();
+
+      final minLen = aNums.length < bNums.length ? aNums.length : bNums.length;
+      for (int i = 0; i < minLen; i++) {
+        if (aNums[i] != bNums[i]) {
+          return aNums[i].compareTo(bNums[i]);
+        }
+      }
+      if (aNums.length != bNums.length) {
+        return aNums.length.compareTo(bNums.length);
+      }
+      return aClean.compareTo(bClean);
+    });
+  }
+
+  static void _sortConstitutionChapters(List<TermLawModel> list) {
+    for (var ch in list) {
+      if (ch.cntTerms != null && ch.cntTerms!.isNotEmpty) {
+        final hasNumbered = ch.cntTerms!.any((item) {
+          final s = (item.slug ?? item.name ?? '').toString();
+          return RegExp(r'\d+\.\d+').hasMatch(s);
+        });
+        if (hasNumbered) {
+          ch.cntTerms!.sort((a, b) {
+            final aRaw = (a.name != null && a.name.toString().isNotEmpty)
+                ? a.name.toString()
+                : (a.slug ?? '').toString();
+            final bRaw = (b.name != null && b.name.toString().isNotEmpty)
+                ? b.name.toString()
+                : (b.slug ?? '').toString();
+            final aClean =
+                aRaw.replaceAll(RegExp(r'^(2019|2000)\.'), '').trim();
+            final bClean =
+                bRaw.replaceAll(RegExp(r'^(2019|2000)\.'), '').trim();
+            final aNums = RegExp(r'\d+')
+                .allMatches(aClean)
+                .map((m) => int.tryParse(m.group(0) ?? '') ?? 0)
+                .toList();
+            final bNums = RegExp(r'\d+')
+                .allMatches(bClean)
+                .map((m) => int.tryParse(m.group(0) ?? '') ?? 0)
+                .toList();
+            final minLen =
+                aNums.length < bNums.length ? aNums.length : bNums.length;
+            for (int i = 0; i < minLen; i++) {
+              if (aNums[i] != bNums[i]) {
+                return aNums[i].compareTo(bNums[i]);
+              }
+            }
+            if (aNums.length != bNums.length) {
+              return aNums.length.compareTo(bNums.length);
+            }
+            return aClean.compareTo(bClean);
+          });
+        }
+      }
+    }
   }
 
   static Future<List<TermLawModel>> getLawSearch({String keyword = ""}) async {
@@ -205,14 +291,18 @@ class BackendService {
             .timeout(timeoutDuration);
         if (response.statusCode == 200 && response.body.isNotEmpty) {
           await prefs.setString(cacheKey, response.body);
-          return TermLawModel.fromJsonList(json.decode(response.body));
+          final res = TermLawModel.fromJsonList(json.decode(response.body));
+          _sortConstitutionChapters(res);
+          return res;
         }
       } catch (_) {
         // Fallback to cache/asset on offline or network error
       }
 
       if (localJson != null && localJson.isNotEmpty) {
-        return TermLawModel.fromJsonList(json.decode(localJson));
+        final res = TermLawModel.fromJsonList(json.decode(localJson));
+        _sortConstitutionChapters(res);
+        return res;
       }
       return [];
     }
@@ -226,6 +316,7 @@ class BackendService {
         final serverResults =
             TermLawModel.fromJsonList(json.decode(response.body));
         if (serverResults.isNotEmpty) {
+          _sortConstitutionChapters(serverResults);
           return serverResults;
         }
       }
