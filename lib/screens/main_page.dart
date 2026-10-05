@@ -1,10 +1,10 @@
 import 'package:app_version_update/app_version_update.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:law_app/items/TermItem.dart';
 import 'package:law_app/models/term1.dart';
 import 'package:law_app/services/BackendService.dart';
 import 'package:law_app/utils/colorlaw.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
@@ -14,45 +14,35 @@ class _MainPageState extends State<MainPage> {
   static const int PAGE_SIZE = 10;
 
   var publishedTerms = <TermOnlyModel>[];
+  bool _isLoading = true;
+
   _read() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'isMenu';
-    final value = prefs.getBool(key) ?? false;
-    print('read: $value');
-    // if (value) {
-    //   print("offline");
-    //   BackendService.getTermOffline(0 + 1, PAGE_SIZE).then((terms) {
-    //     setState(() {
-    //       this.publishedTerms = terms;
-    //       print(terms);
-    //     });
-    //   });
-    // } else {
-    //   print("online");
-    //   BackendService.getTerm(0 + 1, PAGE_SIZE).then((terms) {
-    //     setState(() {
-    //       this.publishedTerms = terms;
-    //       print(terms);
-    //     });
-    //   });
-    // }
-    BackendService.getTerm(0 + 1, PAGE_SIZE).then((terms) {
-      setState(() {
-        this.publishedTerms = terms;
-        print(terms);
-      });
-    });
+    try {
+      final terms = await BackendService.getTerm(1, PAGE_SIZE);
+      if (mounted) {
+        setState(() {
+          publishedTerms = terms;
+          _isLoading = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   void _verifyVersion() async {
+    if (kDebugMode) return;
     try {
       await AppVersionUpdate.checkForUpdates(
               appleId: '1507881332',
               playStoreId: 'mn.law.constitution',
               country: 'mn')
           .then((data) async {
-        print(data);
-        if (data.canUpdate!) {
+        if (data.canUpdate == true && mounted) {
           // await AppVersionUpdate.showBottomSheetUpdate(context: context, appVersionResult: appVersionResult)
           // await AppVersionUpdate.showPageUpdate(context: context, appVersionResult: appVersionResult)
           await AppVersionUpdate.showAlertUpdate(
@@ -60,7 +50,7 @@ class _MainPageState extends State<MainPage> {
             context: context,
             backgroundColor: Colors.grey[200],
             title: 'Мэдэгдэл',
-            mandatory: true,
+            mandatory: false,
             content: 'Шинэ хувилбар гарсан байна. Шинэчилнэ үү',
             updateButtonText: 'Татах',
             cancelButtonText: 'Үгүй',
@@ -135,20 +125,22 @@ class _MainPageState extends State<MainPage> {
                 height: 10,
               ),
               Expanded(
-                // color: Colors.black,
-                // height: MediaQuery.of(context).size.height * 0.5,
-                // padding:
-                //     const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-                child: ListView.builder(
-                  padding:
-                      EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: publishedTerms.length,
-                  itemBuilder: (ctx, i) {
-                    final item = publishedTerms[i];
-                    return TermItem(item, i);
-                  },
-                ),
+                child: _isLoading && publishedTerms.isEmpty
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      )
+                    : ListView.builder(
+                        padding: EdgeInsets.only(
+                            left: 25, right: 25, top: 10, bottom: 10),
+                        physics: BouncingScrollPhysics(),
+                        itemCount: publishedTerms.length,
+                        itemBuilder: (ctx, i) {
+                          final item = publishedTerms[i];
+                          return TermItem(item, i);
+                        },
+                      ),
               ),
             ],
           ),

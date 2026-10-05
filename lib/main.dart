@@ -23,10 +23,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  _read(versionRest) async {
+  _read(String versionRest) async {
     final prefs = await SharedPreferences.getInstance();
-    final version = 'version';
-    final value = prefs.getString(version) ?? "1";
+    const versionKey = 'version';
+    final value = prefs.getString(versionKey) ?? "1";
     if (versionRest == value) {}
   }
 
@@ -34,8 +34,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     BackendService.getContentId(6).then((content) {
-      _read(content.slug ?? "");
-    });
+      _read(content?.slug ?? "");
+    }).catchError((_) {});
   }
 
   @override

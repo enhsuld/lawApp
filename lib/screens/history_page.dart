@@ -1,15 +1,10 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:law_app/models/history.dart';
 import 'package:law_app/models/term1.dart';
 import 'package:law_app/screens/history_details_page.dart';
 import 'package:law_app/services/BackendService.dart';
-import 'package:law_app/utils/colorlaw.dart';
 import 'package:law_app/utils/fade_route.dart';
-// import 'package:network_to_file_image/network_to_file_image.dart';
-import 'package:path/path.dart' as p;
 
 class HistoryPage extends StatefulWidget {
   final TermOnlyModel term;
@@ -18,30 +13,19 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  static const int PAGE_SIZE = 10;
-
   List<HistoryModel> historys = [];
-  File? file;
 
   @override
   void initState() {
     super.initState();
 
     BackendService.getHistoryGroup().then((onValue) {
-      print(onValue);
-      if (onValue != null) {
+      if (mounted) {
         setState(() {
           historys = onValue;
         });
       }
-    });
-    //file = getFile("filename");
-  }
-
-  File getFile(String filename) {
-    Directory dir = new Directory('dir'); //getApplicationDocumentsDirectory();
-    String pathName = p.join(dir.path, filename);
-    return File(pathName);
+    }).catchError((_) {});
   }
 
   @override
@@ -85,8 +69,6 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Widget _itemBuilder(context, HistoryModel entry, _) {
-    //File file = getFile("filename");
-    Color _color = _ % 2 == 0 ? Colors.lightBlue : ColorLaw.blue;
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -118,7 +100,7 @@ class _HistoryPageState extends State<HistoryPage> {
               child: CachedNetworkImage(
                 fit: BoxFit.cover,
                 width: double.infinity,
-                imageUrl: ((entry?.medias ?? []).length > 0)
+                imageUrl: ((entry.medias ?? []).isNotEmpty)
                     ? BackendService.link + entry.medias[0]
                     : "",
                 placeholder: (context, url) =>

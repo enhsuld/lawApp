@@ -36,9 +36,18 @@ class _TermItemState extends State<TermItem> {
           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           onPressed: () {
             if (widget.model.slug == "6") {
+              final box = context.findRenderObject() as RenderBox?;
+              final size = MediaQuery.of(context).size;
+              final Rect sharePositionOrigin =
+                  (box != null && box.hasSize && !box.size.isEmpty)
+                      ? box.localToGlobal(Offset.zero) & box.size
+                      : Rect.fromLTWH(0, 0, size.width, size.height / 2);
+
               Share.share(
-                  'Монгол Улсын Үндсэн хууль\nhttps://onelink.to/conslaw',
-                  subject: 'Монгол Улсын Үндсэн хууль');
+                'Монгол Улсын Үндсэн хууль\nhttps://onelink.to/conslaw',
+                subject: 'Монгол Улсын Үндсэн хууль',
+                sharePositionOrigin: sharePositionOrigin,
+              );
             } else if (widget.model.slug == "4") {
               print(widget.model);
               Navigator.of(context).push(FadeRoute(

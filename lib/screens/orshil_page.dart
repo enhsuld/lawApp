@@ -9,20 +9,9 @@ class OrshilPage extends StatefulWidget {
 }
 
 class _OrshilPageState extends State<OrshilPage> {
-  static const int PAGE_SIZE = 20;
-  List<TermOnlyModel> terms = [];
-
   @override
   void initState() {
     super.initState();
-
-    // BackendService.getOrshilList("111", 0, 10).then((onValue) {
-    //   if (onValue != null) {
-    //     setState(() {
-    //       terms = onValue;
-    //     });
-    //   }
-    // });
   }
 
   @override

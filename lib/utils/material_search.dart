@@ -21,16 +21,29 @@ class MaterialSearchResult<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      child: new Row(
+    return Container(
+      height: 52.0,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: Colors.grey.shade100)),
+      ),
+      child: Row(
         children: <Widget>[
-          new Container(width: 70.0, child: new Icon(icon)),
-          new Expanded(
-              child: new Text(text,
-                  style: Theme.of(context).textTheme.headlineSmall)),
+          Icon(icon, color: Colors.grey.shade500, size: 20),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontFamily: "Fregat",
+                fontSize: 15.0,
+                color: Color(0xFF1E293B),
+              ),
+            ),
+          ),
+          Icon(Icons.north_west_rounded, size: 14, color: Colors.grey.shade400),
         ],
       ),
-      height: 56.0,
     );
   }
 }
@@ -65,8 +78,10 @@ class MaterialSearch<T> extends StatefulWidget {
   final int limit;
   final ValueChanged<T> onSelect;
   final OnSubmit onSubmit;
+
   final Color barBackgroundColor;
   final Color iconColor;
+
   final Widget leading;
 
   @override
@@ -74,146 +89,139 @@ class MaterialSearch<T> extends StatefulWidget {
 }
 
 class _MaterialSearchState<T> extends State<MaterialSearch> {
-  bool _loading = false;
-  List<MaterialSearchResult<T>> _results = [];
-
   String _criteria = '';
-  TextEditingController _controller = new TextEditingController();
-
-  _filter(dynamic v, String c) {
-    return v
-        .toString()
-        .toLowerCase()
-        .trim()
-        .contains(new RegExp(r'' + c.toLowerCase().trim() + ''));
-  }
+  final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-
-    // if (widget.getResults != null) {
-    //   _getResultsDebounced();
-    // }
-
-    // _controller.addListener(() {
-    //   setState(() {
-    //     _criteria = _controller.value.text;
-    //     if (widget.getResults != null) {
-    //       _getResultsDebounced();
-    //     }
-    //   });
-    // });
-  }
-
-  late Timer _resultsTimer;
-  Future _getResultsDebounced() async {
-    if (_results.length == 0) {
-      setState(() {
-        _loading = true;
-      });
-    }
-
-    if (_resultsTimer != null && _resultsTimer.isActive) {
-      _resultsTimer.cancel();
-    }
-
-    _resultsTimer = new Timer(new Duration(milliseconds: 400), () async {
-      if (!mounted) {
-        return;
+    _controller.addListener(() {
+      if (mounted) {
+        setState(() {
+          _criteria = _controller.text;
+        });
       }
-
-      setState(() {
-        _loading = true;
-      });
-
-      // var results = await widget.getResults(_criteria);
-
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        _loading = false;
-        // _results = results;
-      });
     });
   }
 
   @override
   void dispose() {
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    var results = widget.results.where((MaterialSearchResult result) {
-      if (widget.filter != null) {
-        return widget.filter(result.value, _criteria);
-      }
-      //only apply default filter if used the `results` option
-      //because getResults may already have applied some filter if `filter` option was omited.
-      else if (widget.results != null) {
-        return _filter(result.value, _criteria);
-      }
+    final filteredResults = widget.results.where((MaterialSearchResult result) {
+      return widget.filter(result.value, _criteria);
+    }).take(widget.limit).toList();
 
-      return true;
-    }).toList();
-
-    // if (widget.sort != null) {
-    //   results.sort((a, b) => widget.sort(a.value, b.value, _criteria));
-    // }
-
-    results = results.take(widget.limit).toList();
-
-    IconThemeData iconTheme =
-        Theme.of(context).iconTheme.copyWith(color: widget.iconColor);
-
-    return new Scaffold(
-      appBar: new AppBar(
-        leading: widget.leading,
-        backgroundColor: widget.barBackgroundColor,
-        iconTheme: iconTheme,
-        title: new TextField(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: (widget.leading is SizedBox)
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back, color: Color(0xFF1B4392)),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            : widget.leading,
+        backgroundColor: Colors.white,
+        elevation: 0.5,
+        iconTheme: const IconThemeData(color: Color(0xFF1B4392)),
+        title: TextField(
           controller: _controller,
           autofocus: true,
-          decoration:
-              new InputDecoration.collapsed(hintText: widget.placeholder),
-          style: Theme.of(context).textTheme.titleSmall,
+          textInputAction: TextInputAction.search,
+          decoration: InputDecoration(
+            hintText: widget.placeholder,
+            hintStyle: TextStyle(
+              color: Colors.grey.shade400,
+              fontSize: 16,
+              fontFamily: 'Fregat',
+            ),
+            border: InputBorder.none,
+          ),
+          style: const TextStyle(
+            color: Color(0xFF1B4392),
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            fontFamily: 'Fregat',
+          ),
           onSubmitted: (String value) {
-            if (widget.onSubmit != null) {
-              widget.onSubmit(value);
+            final trimmed = value.trim();
+            if (trimmed.isNotEmpty) {
+              widget.onSubmit(trimmed);
             }
           },
         ),
-        actions: _criteria.length == 0
-            ? []
-            : [
-                new IconButton(
-                    icon: new Icon(Icons.clear),
-                    onPressed: () {
-                      setState(() {
-                        _controller.text = _criteria = '';
-                      });
-                    }),
-              ],
-      ),
-      body: _loading
-          ? new Center(
-              child: new Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
-                  child: new CircularProgressIndicator()),
-            )
-          : new SingleChildScrollView(
-              child: new Column(
-                children: results.map((MaterialSearchResult result) {
-                  return new InkWell(
-                    onTap: () => widget.onSelect(result.value),
-                    child: result,
-                  );
-                }).toList(),
-              ),
+        actions: [
+          if (_criteria.isNotEmpty)
+            IconButton(
+              icon: const Icon(Icons.clear, color: Colors.grey),
+              tooltip: "Цэвэрлэх",
+              onPressed: () {
+                _controller.clear();
+              },
             ),
+          IconButton(
+            icon: const Icon(Icons.search, color: Color(0xFF1B4392)),
+            tooltip: "Хайх",
+            onPressed: () {
+              final trimmed = _controller.text.trim();
+              if (trimmed.isNotEmpty) {
+                widget.onSubmit(trimmed);
+              }
+            },
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (_criteria.trim().isNotEmpty)
+              InkWell(
+                onTap: () => widget.onSubmit(_criteria.trim()),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 14),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1B4392).withOpacity(0.06),
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey.shade200),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.search_rounded,
+                          color: Color(0xFF1B4392), size: 20),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Text(
+                          '"${_criteria.trim()}" гэж хайх',
+                          style: const TextStyle(
+                            color: Color(0xFF1B4392),
+                            fontWeight: FontWeight.w700,
+                            fontFamily: "Fregat",
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward_rounded,
+                          size: 16, color: Color(0xFF1B4392)),
+                    ],
+                  ),
+                ),
+              ),
+            ...filteredResults.map((MaterialSearchResult result) {
+              return InkWell(
+                onTap: () => widget.onSelect(result.value),
+                child: result,
+              );
+            }),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -224,8 +232,7 @@ class _MaterialSearchPageRoute<T> extends MaterialPageRoute<T> {
     RouteSettings settings = const RouteSettings(),
     bool maintainState = true,
     bool fullscreenDialog = false,
-  })  : assert(builder != null),
-        super(
+  }) : super(
             builder: builder,
             settings: settings,
             maintainState: maintainState,
@@ -325,9 +332,7 @@ class _MaterialSearchInputState<T> extends State<MaterialSearchInput<T>> {
             child: _isEmpty(field)
                 ? null
                 : new Text(
-                    widget.formatter != null
-                        ? widget.formatter(field.value as T)
-                        : field.value.toString(),
+                    widget.formatter(field.value as T),
                     style: valueStyle),
           );
         },

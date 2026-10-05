@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:law_app/models/term.dart';
 import 'package:law_app/models/term1.dart';
 import 'package:law_app/models/termChild.dart';
 import 'package:law_app/screens/photo_wrapper.dart';
@@ -17,9 +16,6 @@ class AboutDetailPage extends StatefulWidget {
 }
 
 class _AboutDetailPageState extends State<AboutDetailPage> {
-  static const int PAGE_SIZE = 10;
-  // List<TermModel> publishedTerms = [];
-  List<TermModel> publishedTerms = [];
   TermChildModel? term;
   bool verticalGallery = false;
   bool isLoad = false;

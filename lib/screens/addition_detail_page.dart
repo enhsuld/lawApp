@@ -14,26 +14,102 @@ class AdditionDetailPage extends StatefulWidget {
 }
 
 class _AdditionDetailPageState extends State<AdditionDetailPage> {
-  static const int PAGE_SIZE = 10;
-  // List<TermModel> publishedTerms = [];
   TermTaxonomyModel? publishedTerms;
   bool isLoad = false;
 
   @override
   void initState() {
     super.initState();
-    print("ids " + widget.term.id.toString());
     BackendService.getTermTaxonomyById(widget.term.id).then((terms) {
-      setState(() {
-        this.publishedTerms = terms;
-        isLoad = true;
-      });
+      if (mounted) {
+        setState(() {
+          publishedTerms = terms;
+          isLoad = true;
+        });
+      }
+    }).catchError((_) {
+      if (mounted) {
+        setState(() {
+          isLoad = true;
+        });
+      }
     });
+  }
+
+  String _cleanArticleNumber(TermTaxonomyModel item) {
+    final raw = (item.slug ?? item.name ?? '').trim();
+    return raw.replaceAll(RegExp(r'^(2019|2000)\.'), '');
+  }
+
+  Widget _buildTaxonomyContent(TermTaxonomyModel model) {
+    if (model.taxonomies != null && model.taxonomies!.isNotEmpty) {
+      return _buildTaxonomyText(model.taxonomies![0]);
+    }
+
+    // Dynamic fallback fetch if taxonomy wasn't in the initial tree
+    return FutureBuilder<List<TaxonomyModel>>(
+      future: BackendService.getTaxonomyById(model.id),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Center(
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: ColorLaw.blue,
+                ),
+              ),
+            ),
+          );
+        }
+        final list = snapshot.data ?? [];
+        if (list.isNotEmpty) {
+          return _buildTaxonomyText(list[0]);
+        }
+        return const SizedBox();
+      },
+    );
+  }
+
+  Widget _buildTaxonomyText(TaxonomyModel tax) {
+    final title = (tax.taxonomy ?? '').trim();
+    final description = (tax.description ?? '').trim();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (title.isNotEmpty) ...[
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: ColorLaw.blue,
+            ),
+          ),
+          const SizedBox(height: 6),
+        ],
+        if (description.isNotEmpty)
+          Text(
+            description,
+            textAlign: TextAlign.justify,
+            style: const TextStyle(
+              fontSize: 16,
+              height: 1.45,
+              color: Colors.black87,
+            ),
+          ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    print(publishedTerms?.cntTerms?.length);
+    final termsList = publishedTerms?.cntTerms ?? [];
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -42,86 +118,85 @@ class _AdditionDetailPageState extends State<AdditionDetailPage> {
           },
           icon: Icon(
             Icons.arrow_back,
-            color: Color(0xff1b4392),
+            color: ColorLaw.blue,
           ),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          "${(widget.term.name ?? "")} оны " + widget.term.slug!,
+          "${widget.term.name ?? ""} оны ${widget.term.slug ?? ""}",
           style: TextStyle(
-              color: Color(0xff1b4392),
-              fontSize: 20,
-              fontWeight: FontWeight.normal),
+            color: ColorLaw.blue,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
-      body: isLoad
-          ? Container(
-              child: ListView(
-                padding: EdgeInsets.only(top: 10, left: 15, right: 15),
-                children: List.generate((publishedTerms?.cntTerms?.length ?? 0),
-                    (index) {
-                  TermTaxonomyModel model = publishedTerms?.cntTerms![index];
-                  TaxonomyModel? taxonomyModel;
-                  if (model.taxonomies != null && model.taxonomies!.length > 0)
-                    taxonomyModel = model.taxonomies![0];
+      body: !isLoad
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : termsList.isEmpty
+              ? const Center(
+                  child: Text(
+                    "Мэдээлэл олдсонгүй",
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 12),
+                  itemCount: termsList.length,
+                  itemBuilder: (context, index) {
+                    final TermTaxonomyModel item = termsList[index];
+                    final articleNumber = _cleanArticleNumber(item);
 
-                  return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                    child: RawMaterialButton(
-                      onPressed: () {},
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 12),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Row(
                             children: <Widget>[
                               Text(
-                                "${publishedTerms?.cntTerms![index].slug}",
+                                articleNumber,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w700),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  color: ColorLaw.blue,
+                                ),
                               ),
-                              SizedBox(
-                                width: 15,
-                              ),
+                              const SizedBox(width: 12),
                               Container(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 3),
                                 decoration: BoxDecoration(
-                                    color: ColorLaw.blue,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
-                                child: Text(
-                                  "өөрчлөн найруулсан".toUpperCase(),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white),
+                                  color: ColorLaw.blue,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(6)),
                                 ),
-                              )
+                                child: Text(
+                                  "ӨӨРЧЛӨН НАЙРУУЛСАН",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "${taxonomyModel?.description ?? ""}",
-                            textAlign: TextAlign.justify,
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          SizedBox(height: 15),
-                          Divider(color: Colors.grey)
+                          const SizedBox(height: 10),
+                          _buildTaxonomyContent(item),
+                          const SizedBox(height: 12),
+                          Divider(color: Colors.grey[300], thickness: 1),
                         ],
                       ),
-                    ),
-                  );
-                }),
-              ),
-            )
-          : Center(
-              child: CircularProgressIndicator(),
-            ),
+                    );
+                  },
+                ),
     );
   }
 }

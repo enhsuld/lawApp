@@ -5,82 +5,77 @@ TextStyle posRes = TextStyle(
         color: Colors.white,
         fontSize: 18,
         backgroundColor: ColorLaw.blue,
-        fontFamily: "Fregat"),
-    negRes = TextStyle(
-        color: Colors.black,
+        fontFamily: "Fregat");
+TextStyle negRes = TextStyle(
+        color: Colors.black87,
         fontSize: 18,
         backgroundColor: Colors.transparent,
         fontFamily: "Fregat");
 
-final text = '''
-Call me Ishmael. Some years ago—never mind how long precisely—having
-little or no money in my purse, and nothing particular to interest me
-on shore, I thought I would sail about a little and see the watery part
-of the world. It is a way I have of driving off the spleen and
-regulating the circulation. Whenever I find myself growing grim about
-the mouth; whenever it is a damp, drizzly November in my soul; whenever
-I find myself involuntarily pausing before coffin warehouses, and
-bringing up the rear of every funeral I meet; and especially whenever
-my hypos get such an upper hand of me, that it requires a strong moral
-principle to prevent me from deliberately stepping into the street, and
-methodically knocking people’s hats off—then, I account it high time to
-get to sea as soon as I can. This is my substitute for pistol and ball.
-With a philosophical flourish Cato throws himself upon his sword; I
-quietly take to the ship. There is nothing surprising in this. If they
-but knew it, almost all men in their degree, some time or other,
-cherish very nearly the same feelings towards the ocean with me.
-'''
-    .replaceAll("\n", " ")
-    .replaceAll("  ", "");
+TextSpan searchMatch(String match, dynamic search, {double fontSize = 16.0}) {
+  final TextStyle pos = TextStyle(
+    color: Colors.white,
+    fontSize: fontSize,
+    backgroundColor: ColorLaw.blue,
+    fontFamily: "Fregat",
+  );
+  final TextStyle neg = TextStyle(
+    color: const Color(0xFF1E293B),
+    fontSize: fontSize,
+    backgroundColor: Colors.transparent,
+    fontFamily: "Fregat",
+    height: 1.5,
+  );
 
-TextSpan searchMatch(String match, search) {
-  if (search == null || search == "")
-    return TextSpan(text: match, style: negRes);
+  if (search == null || search == "" || (search is String && search.isEmpty)) {
+    return TextSpan(text: match, style: neg);
+  }
+  final String searchStr = search.toString();
   var refinedMatch = match.toLowerCase();
-  var refinedSearch = search.toLowerCase();
+  var refinedSearch = searchStr.toLowerCase();
   if (refinedMatch.contains(refinedSearch)) {
     if (refinedMatch.substring(0, refinedSearch.length) == refinedSearch) {
       return TextSpan(
-        style: posRes,
+        style: pos,
         text: match.substring(0, refinedSearch.length),
         children: [
           searchMatch(
-              match.substring(
-                refinedSearch.length,
-              ),
-              search),
+            match.substring(refinedSearch.length),
+            searchStr,
+            fontSize: fontSize,
+          ),
         ],
       );
     } else if (refinedMatch.length == refinedSearch.length) {
-      return TextSpan(text: match, style: posRes);
+      return TextSpan(text: match, style: pos);
     } else {
       return TextSpan(
-        style: negRes,
+        style: neg,
         text: match.substring(
           0,
           refinedMatch.indexOf(refinedSearch),
         ),
         children: [
           searchMatch(
-              match.substring(
-                refinedMatch.indexOf(refinedSearch),
-              ),
-              search),
+            match.substring(refinedMatch.indexOf(refinedSearch)),
+            searchStr,
+            fontSize: fontSize,
+          ),
         ],
       );
     }
   } else if (!refinedMatch.contains(refinedSearch)) {
-    return TextSpan(text: match, style: negRes);
+    return TextSpan(text: match, style: neg);
   }
   return TextSpan(
     text: match.substring(0, refinedMatch.indexOf(refinedSearch)),
-    style: negRes,
+    style: neg,
     children: [
       searchMatch(
-          match.substring(
-            refinedMatch.indexOf(refinedSearch),
-          ),
-          search)
+        match.substring(refinedMatch.indexOf(refinedSearch)),
+        searchStr,
+        fontSize: fontSize,
+      )
     ],
   );
 }

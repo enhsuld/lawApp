@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:law_app/models/term.dart';
 import 'package:law_app/models/term1.dart';
 import 'package:law_app/screens/about_detail_page.dart';
 import 'package:law_app/screens/addition_detail_page.dart';
@@ -14,13 +13,6 @@ class AdditionPage extends StatefulWidget {
 }
 
 class _AdditionPageState extends State<AdditionPage> {
-  List<Map<String, dynamic>> _tabs = [];
-  List<String> _views = [];
-
-  static const int PAGE_SIZE = 10;
-  // List<TermModel> publishedTerms = [];
-  List<TermModel> publishedTerms = [];
-
   @override
   void initState() {
     super.initState();
