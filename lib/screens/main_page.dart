@@ -7,6 +7,9 @@ import 'package:law_app/services/BackendService.dart';
 import 'package:law_app/utils/colorlaw.dart';
 
 class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
   _MainPageState createState() => _MainPageState();
 }
 
@@ -16,12 +19,33 @@ class _MainPageState extends State<MainPage> {
   var publishedTerms = <TermOnlyModel>[];
   bool _isLoading = true;
 
+  // Оршил цэсийг хамгийн эхэнд байршуулах эрэмбэлэлтийн бүтэц
+  List<TermOnlyModel> _sortTerms(List<TermOnlyModel> list) {
+    const orderMap = {
+      "2": 1, // 1. Оршил (Preamble) - Хамгийн дээр
+      "3": 2, // 2. Монгол улсын үндсэн хууль
+      "4": 3, // 3. Нэмэлт өөрчлөлтүүд
+      "5": 4, // 4. Монгол улсын түүх
+      "6": 5, // 5. Найзтайгаа хуваалцах
+    };
+
+    final result = List<TermOnlyModel>.from(list);
+    result.sort((a, b) {
+      final orderA = orderMap[a.slug] ??
+          (a.name?.toLowerCase().contains("оршил") == true ? 1 : 99);
+      final orderB = orderMap[b.slug] ??
+          (b.name?.toLowerCase().contains("оршил") == true ? 1 : 99);
+      return orderA.compareTo(orderB);
+    });
+    return result;
+  }
+
   _read() async {
     try {
       final terms = await BackendService.getTerm(1, PAGE_SIZE);
       if (mounted) {
         setState(() {
-          publishedTerms = terms;
+          publishedTerms = _sortTerms(terms);
           _isLoading = false;
         });
       }
@@ -38,13 +62,11 @@ class _MainPageState extends State<MainPage> {
     if (kDebugMode) return;
     try {
       await AppVersionUpdate.checkForUpdates(
-              appleId: '1507881332',
-              playStoreId: 'mn.law.constitution',
-              country: 'mn')
-          .then((data) async {
+        appleId: '1507881332',
+        playStoreId: 'mn.law.constitution',
+        country: 'mn',
+      ).then((data) async {
         if (data.canUpdate == true && mounted) {
-          // await AppVersionUpdate.showBottomSheetUpdate(context: context, appVersionResult: appVersionResult)
-          // await AppVersionUpdate.showPageUpdate(context: context, appVersionResult: appVersionResult)
           await AppVersionUpdate.showAlertUpdate(
             appVersionResult: data,
             context: context,
@@ -55,9 +77,10 @@ class _MainPageState extends State<MainPage> {
             updateButtonText: 'Татах',
             cancelButtonText: 'Үгүй',
             titleTextStyle: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w600,
-                fontSize: 24.0),
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontSize: 24.0,
+            ),
             contentTextStyle: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w400,
@@ -78,63 +101,123 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: ColorLaw.blue,
-        body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/Home.png"),
-              fit: BoxFit.cover,
-            ),
+      backgroundColor: ColorLaw.blue,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/Home.png"),
+            fit: BoxFit.cover,
           ),
+        ),
+        child: SafeArea(
+          bottom: false,
           child: Column(
             children: <Widget>[
-              //Text('Connection Status: $_connectionStatus'),
-              Container(
-                height: 220,
-                padding:
-                    EdgeInsets.only(top: 80, left: 50, right: 50, bottom: 10),
-                child: Image.asset("assets/images/logo_large.png"),
+              const SizedBox(height: 15),
+
+              // 1. Төрийн сүлд - Алтан шаргал болон хөх гэрлийн уусалттай (Ambient Glow)
+              Center(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Сүлдний арын зөөлөн гэрэлтэлтийн уусалт
+                    Container(
+                      width: 130,
+                      height: 130,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFFBBF24).withOpacity(0.35),
+                            blurRadius: 45,
+                            spreadRadius: 8,
+                          ),
+                          BoxShadow(
+                            color: const Color(0xFF38BDF8).withOpacity(0.25),
+                            blurRadius: 65,
+                            spreadRadius: 15,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Image.asset(
+                      "assets/images/logo_large.png",
+                      height: 125,
+                      fit: BoxFit.contain,
+                    ),
+                  ],
+                ),
               ),
-              Container(
-                padding:
-                    EdgeInsets.only(top: 15, bottom: 10, left: 8, right: 8),
+
+              const SizedBox(height: 12),
+
+              // 2. Дээд гарчиг
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
                   'МОНГОЛ УЛСЫН ҮНДСЭН ХУУЛЬ',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 26.0,
+                    fontSize: 24.0,
                     fontFamily: "Fregat",
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
+                    letterSpacing: 0.8,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black.withOpacity(0.65),
+                        blurRadius: 14,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(top: 20),
+
+              // 3. Үндэсний хээний гоёл бүхий нарийн зааглагч
+              Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 8),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Image.asset("assets/images/hee_home.png"),
-                    // Image.asset("assets/images/hee_home.png"),
-                    // Image.asset("assets/images/hee_home.png")
+                  children: [
+                    Container(
+                      width: 32,
+                      height: 1,
+                      color: Colors.white.withOpacity(0.35),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Image.asset(
+                        "assets/images/hee_home.png",
+                        height: 12,
+                        color: const Color(0xFFFDE68A), // Алтан шаргал туяа
+                      ),
+                    ),
+                    Container(
+                      width: 32,
+                      height: 1,
+                      color: Colors.white.withOpacity(0.35),
+                    ),
                   ],
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+
+              const SizedBox(height: 6),
+
+              // 4. Үндсэн цэсүүд
               Expanded(
                 child: _isLoading && publishedTerms.isEmpty
-                    ? Center(
+                    ? const Center(
                         child: CircularProgressIndicator(
                           color: Colors.white,
                         ),
                       )
                     : ListView.builder(
-                        padding: EdgeInsets.only(
-                            left: 25, right: 25, top: 10, bottom: 10),
-                        physics: BouncingScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
+                        physics: const BouncingScrollPhysics(),
                         itemCount: publishedTerms.length,
                         itemBuilder: (ctx, i) {
                           final item = publishedTerms[i];
@@ -144,11 +227,8 @@ class _MainPageState extends State<MainPage> {
               ),
             ],
           ),
-        ));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+        ),
+      ),
+    );
   }
 }

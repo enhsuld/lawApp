@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:law_app/models/taxonomy.dart';
-import 'package:law_app/utils/colorlaw.dart';
 
 class LinePainter extends CustomPainter {
-  LinePainter(
-      {required this.lineColor,
-      required this.backgroundColor,
-      this.ending = false})
-      : super();
+  LinePainter({
+    required this.lineColor,
+    required this.backgroundColor,
+    this.ending = false,
+  }) : super();
 
-  /// The background color
   final Color backgroundColor;
-
-  /// The line color
   final Color lineColor;
-
-  /// Is this line painter for an ending row?
   final bool ending;
 
   @override
@@ -28,35 +22,41 @@ class LinePainter extends CustomPainter {
   }
 
   void _paintEnding(Canvas canvas, Size size) {
-    Paint linePaint = new Paint()
-      ..shader = new LinearGradient(
-              colors: [backgroundColor, lineColor],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter)
-          .createShader(Offset.zero & size)
-      ..strokeWidth = 1.0
-      ..strokeCap = StrokeCap.square
+    final Paint linePaint = Paint()
+      ..shader = LinearGradient(
+        colors: [backgroundColor, lineColor],
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+      ).createShader(Offset.zero & size)
+      ..strokeWidth = 2.0
+      ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
-    canvas.drawLine(size.topCenter(new Offset(0.0, 2.0)),
-        size.bottomCenter(new Offset(0.0, -2.0)), linePaint);
+    canvas.drawLine(
+      size.topCenter(const Offset(0.0, 2.0)),
+      size.bottomCenter(const Offset(0.0, -2.0)),
+      linePaint,
+    );
   }
 
   void _paint(Canvas canvas, Size size) {
-    Paint linePaint = new Paint()
+    final Paint linePaint = Paint()
       ..color = lineColor
-      ..strokeWidth = 1.0
-      ..strokeCap = StrokeCap.square
+      ..strokeWidth = 2.0
+      ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
-    canvas.drawLine(size.topCenter(new Offset(0.0, 2.0)),
-        size.bottomCenter(new Offset(0.0, -2.0)), linePaint);
+    canvas.drawLine(
+      size.topCenter(const Offset(0.0, 2.0)),
+      size.bottomCenter(const Offset(0.0, -2.0)),
+      linePaint,
+    );
 
-    Paint fillPaint = new Paint()
+    final Paint fillPaint = Paint()
       ..color = lineColor
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(size.center(Offset.zero), 14.0, fillPaint);
+    canvas.drawCircle(size.center(Offset.zero), 10.0, fillPaint);
   }
 
   @override
@@ -72,115 +72,157 @@ class TimelineEntryRow extends StatelessWidget {
   final String imagesBaseUrl;
   final TaxonomyModel entry;
 
-  TimelineEntryRow(
-      {required this.lineColor,
-      required this.backgroundColor,
-      required this.imagesBaseUrl,
-      required this.entry});
+  const TimelineEntryRow({
+    Key? key,
+    required this.lineColor,
+    required this.backgroundColor,
+    required this.imagesBaseUrl,
+    required this.entry,
+  }) : super(key: key);
 
   Widget _buildLineCheck(BuildContext context) {
-    return Container(
-      width: 30,
-      height: double.infinity,
+    return SizedBox(
+      width: 34,
       child: Stack(
+        clipBehavior: Clip.none,
         children: <Widget>[
+          // Босоо шугам
           Positioned.fill(
             child: Align(
               alignment: Alignment.center,
               child: Container(
-                width: 1.5,
-                color: ColorLaw.blue,
+                width: 2,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFCBD5E1),
+                  borderRadius: BorderRadius.circular(1),
+                ),
               ),
             ),
           ),
+          // Төрийн тугтай тэмдэглэгээ
           Positioned(
-            top: 8,
-            left: 0,
-            right: 0,
+            top: 14,
+            left: 2,
+            right: 2,
             child: Container(
-              width: 28,
-              height: 21,
-              padding: EdgeInsets.all(1),
+              width: 30,
+              height: 30,
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(width: 1.5, color: ColorLaw.blue),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  image: DecorationImage(
-                    fit: BoxFit.fitHeight,
-                    image: new AssetImage("assets/images/tug.png"),
-                  )),
+                color: Colors.white,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: const Color(0xFF1B4392),
+                  width: 2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF1B4392).withOpacity(0.18),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: ClipOval(
+                  child: Image.asset(
+                    "assets/images/tug.png",
+                    width: 17,
+                    height: 17,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  double lengthToHeight(txtLength) {
-    if (txtLength < 50) {
-      return 90;
-    }
-    if (txtLength < 90) {
-      return 110;
-    }
-    if (txtLength < 150) {
-      return 140;
-    }
-    if (txtLength < 220) {
-      return 170;
-    }
-
-    if (txtLength < 290) {
-      return 200;
-    }
-    if (txtLength < 500) {
-      return 250;
-    } else {
-      return 310;
-    }
-  }
-
   Widget _buildCardContent(BuildContext context) {
-    return new Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        child: IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _buildLineCheck(context),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 3, bottom: 20),
+    final title = (entry.taxonomy ?? "").trim();
+    final description = (entry.description ?? "").trim();
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14.0),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _buildLineCheck(context),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: const Color(0xFFE2E8F0),
+                      width: 1,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF0F172A).withOpacity(0.04),
+                        blurRadius: 10,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      (entry.taxonomy ?? "").isNotEmpty
-                          ? Container(
-                              child: new Text(entry.taxonomy ?? "",
-                                  textAlign: TextAlign.justify,
-                                  style: new TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            )
-                          : Container(),
-                      SizedBox(height: 4),
-                      Container(
-                          child: new Text(
-                        entry.description ?? "",
-                        textAlign: TextAlign.justify,
-                        style: new TextStyle(fontSize: 16),
-                      )),
+                      if (title.isNotEmpty) ...[
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 4, right: 8),
+                              width: 3.5,
+                              height: 15,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF1B4392),
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                title,
+                                style: const TextStyle(
+                                  fontSize: 15.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xFF1B4392),
+                                  fontFamily: "Fregat",
+                                  height: 1.3,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                      if (description.isNotEmpty)
+                        Text(
+                          description,
+                          textAlign: TextAlign.justify,
+                          style: const TextStyle(
+                            fontSize: 14.5,
+                            height: 1.55,
+                            color: Color(0xFF334155),
+                            fontFamily: "Fregat",
+                          ),
+                        ),
                     ],
                   ),
                 ),
-              )
-            ],
-          ),
-        ));
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
